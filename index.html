@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Sejarah Bitcoin</title>
-<meta name="description" content="Sejarah Bitcoin dari era cypherpunk hingga halving keempat, plus kriptografi di baliknya: SHA-256, secp256k1, Schnorr, Merkle tree dan proof-of-work. Bisa dicoba langsung di browser.">
+<title>History of Bitcoin</title>
+<meta name="description" content="The history of Bitcoin from the cypherpunk era to the fourth halving, plus the cryptography behind it: SHA-256, secp256k1, Schnorr, Merkle trees and proof-of-work. Try it live in your browser.">
 <meta name="theme-color" content="#07070a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23f7931a'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='700' font-size='36' text-anchor='middle' fill='%2307070a'%3E%E2%82%BF%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -442,19 +442,19 @@
 
 <header class="nav" id="nav">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Sejarah Bitcoin, ke atas">
+    <a class="brand" href="#top" aria-label="History of Bitcoin, back to top">
       <span class="brand-mark" aria-hidden="true">₿</span>
-      <span>Sejarah Bitcoin</span>
+      <span>History of Bitcoin</span>
     </a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#prolog">Prolog</a></li>
-      <li><a href="#sejarah">Lini Masa</a></li>
-      <li><a href="#kriptografi">Kriptografi</a></li>
+      <li><a href="#prolog">Prologue</a></li>
+      <li><a href="#timeline-section">Timeline</a></li>
+      <li><a href="#cryptography">Cryptography</a></li>
       <li><a href="#lab">Lab</a></li>
       <li><a href="#genesis">Genesis</a></li>
       <li><a href="#halving">Halving</a></li>
-      <li><a href="#referensi">Referensi</a></li>
+      <li><a href="#references">References</a></li>
     </ul>
   </div>
 </header>
@@ -462,78 +462,78 @@
 <main id="top">
 
   <!-- HERO -->
-  <section class="hero" aria-label="Pembuka">
+  <section class="hero" aria-label="Intro">
     <canvas id="rain" aria-hidden="true"></canvas>
     <div class="wrap hero-inner intro">
-      <div class="headline-quote" title="Pesan yang tertanam di coinbase blok #0">
-        <b>Blok #0</b><span>"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"</span>
+      <div class="headline-quote" title="Message embedded in the coinbase of block #0">
+        <b>Block #0</b><span>"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"</span>
       </div>
-      <h1>Uang yang ditulis<br>dengan <em>matematika</em></h1>
-      <p class="lede">Dari milis cypherpunk hingga jaringan bernilai triliunan dolar. Ini kisah Bitcoin, dan kriptografi di baliknya yang bisa kamu coba langsung di halaman ini.</p>
+      <h1>Money written<br>in <em>mathematics</em></h1>
+      <p class="lede">From a cypherpunk mailing list to a trillion-dollar network. This is the story of Bitcoin, and the cryptography behind it that you can try right on this page.</p>
       <dl class="hero-stats">
-        <div><dt>Sejak genesis</dt><dd id="since">—</dd></div>
-        <div><dt>Pasokan maks</dt><dd>21.000.000</dd></div>
+        <div><dt>Since genesis</dt><dd id="since">—</dd></div>
+        <div><dt>Max supply</dt><dd>21,000,000</dd></div>
         <div><dt>Hash</dt><dd>SHA-256²</dd></div>
       </dl>
     </div>
-    <a class="scroll-cue" href="#prolog" aria-label="Gulir ke prolog">GULIR<i></i></a>
+    <a class="scroll-cue" href="#prolog" aria-label="Scroll to prologue">SCROLL<i></i></a>
   </section>
 
   <!-- PROLOG -->
   <section class="section" id="prolog">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 01 · 1976–2005</span>
-        <h2>Sebelum Satoshi, ada <em>cypherpunk</em></h2>
-        <p>Bitcoin tidak muncul tiba-tiba. Hampir tiga dekade riset kriptografi dan upaya uang digital yang gagal menyiapkan semua bahannya.</p>
+        <span class="eyebrow">Chapter 01 · 1976–2005</span>
+        <h2>Before Satoshi, there were <em>cypherpunks</em></h2>
+        <p>Bitcoin did not appear out of nowhere. Nearly three decades of cryptographic research and failed attempts at digital money prepared every ingredient.</p>
       </div>
       <div class="prolog reveal">
         <article>
           <div class="year">1976</div>
-          <h3>Kriptografi kunci publik</h3>
-          <p>Makalah "New Directions in Cryptography" memperkenalkan pertukaran kunci tanpa rahasia bersama, fondasi tanda tangan digital.</p>
+          <h3>Public-key cryptography</h3>
+          <p>"New Directions in Cryptography" introduced key exchange without a pre-shared secret, the foundation of digital signatures.</p>
           <div class="who">Whitfield Diffie & Martin Hellman</div>
         </article>
         <article>
           <div class="year">1982</div>
           <h3>Blind signatures &amp; eCash</h3>
-          <p>Chaum merancang pembayaran yang tidak bisa dilacak. Lewat DigiCash (1989) idenya jadi produk, tapi masih bergantung pada satu server pusat.</p>
+          <p>Chaum designed untraceable payments. DigiCash (1989) turned the idea into a product, but it still depended on a single central server.</p>
           <div class="who">David Chaum</div>
         </article>
         <article>
           <div class="year">1985</div>
-          <h3>Kriptografi kurva eliptik</h3>
-          <p>Diusulkan secara terpisah oleh dua peneliti. ECC menawarkan keamanan setara RSA dengan kunci yang jauh lebih pendek.</p>
+          <h3>Elliptic curve cryptography</h3>
+          <p>Proposed independently by two researchers. ECC offers security comparable to RSA with much shorter keys.</p>
           <div class="who">Neal Koblitz & Victor Miller</div>
         </article>
         <article>
           <div class="year">1991</div>
-          <h3>Rantai hash bertanda waktu</h3>
-          <p>Dokumen diberi stempel waktu dan dirangkai dengan hash sehingga riwayatnya tidak bisa diubah. Makalah ini dikutip tiga kali di whitepaper Bitcoin.</p>
+          <h3>Timestamped hash chains</h3>
+          <p>Documents are timestamped and linked by hashes so their history cannot be altered. This work is cited three times in the Bitcoin whitepaper.</p>
           <div class="who">Stuart Haber & W. Scott Stornetta</div>
         </article>
         <article>
           <div class="year">1992</div>
-          <h3>Milis Cypherpunks</h3>
-          <p>Komunitas yang percaya privasi harus dijaga dengan kode. "A Cypherpunk's Manifesto" terbit tahun berikutnya.</p>
+          <h3>The Cypherpunks mailing list</h3>
+          <p>A community that believed privacy must be defended with code. "A Cypherpunk's Manifesto" followed the next year.</p>
           <div class="who">Eric Hughes, Timothy May, John Gilmore</div>
         </article>
         <article>
           <div class="year">1997</div>
           <h3>Hashcash</h3>
-          <p>Proof-of-work untuk melawan spam email. Satoshi memakai mekanisme yang sama untuk mengamankan blockchain.</p>
+          <p>Proof-of-work to fight email spam. Satoshi used the same mechanism to secure the blockchain.</p>
           <div class="who">Adam Back</div>
         </article>
         <article>
           <div class="year">1998</div>
           <h3>b-money</h3>
-          <p>Usulan uang terdistribusi dengan buku besar bersama dan pembuatan uang lewat komputasi. Dikutip langsung di whitepaper.</p>
+          <p>A proposal for distributed money with a shared ledger and money created through computation. Cited directly in the whitepaper.</p>
           <div class="who">Wei Dai</div>
         </article>
         <article>
           <div class="year">2004 – 2005</div>
           <h3>RPOW &amp; Bit Gold</h3>
-          <p>Token proof-of-work yang bisa dipakai ulang, dan "emas digital" berantai hash. Keduanya hampir menyelesaikan masalah double-spend.</p>
+          <p>Reusable proof-of-work tokens, and hash-chained "digital gold". Both came close to solving the double-spend problem.</p>
           <div class="who">Hal Finney · Nick Szabo</div>
         </article>
       </div>
@@ -548,159 +548,159 @@
   </div>
 
   <!-- TIMELINE -->
-  <section class="section" id="sejarah">
+  <section class="section" id="timeline-section">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 02 · 2008–sekarang</span>
-        <h2>Lini masa <em>Bitcoin</em></h2>
-        <p>Momen yang membentuk jaringan: dari sembilan halaman PDF sampai ETF di Wall Street.</p>
+        <span class="eyebrow">Chapter 02 · 2008–today</span>
+        <h2>The <em>Bitcoin</em> timeline</h2>
+        <p>The moments that shaped the network: from a nine-page PDF to ETFs on Wall Street.</p>
       </div>
 
       <div class="timeline" id="timeline">
         <div class="tl-fill" id="tlFill" aria-hidden="true"></div>
 
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">18 Agu 2008 <span class="tag">bitcoin.org</span></div>
-          <h3>Domain bitcoin.org didaftarkan</h3>
-          <p>Dua bulan sebelum whitepaper beredar, panggungnya sudah disiapkan secara anonim.</p>
+          <div class="tl-date">18 Aug 2008 <span class="tag">bitcoin.org</span></div>
+          <h3>bitcoin.org is registered</h3>
+          <p>Two months before the whitepaper circulated, the stage was set anonymously.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">31 Okt 2008 <span class="tag hot">Whitepaper</span></div>
+          <div class="tl-date">31 Oct 2008 <span class="tag hot">Whitepaper</span></div>
           <h3>"Bitcoin: A Peer-to-Peer Electronic Cash System"</h3>
-          <p>Satoshi Nakamoto mengirim makalah sembilan halaman ke milis kriptografi. Isinya menjawab masalah double-spend tanpa pihak ketiga, dengan proof-of-work dan rantai blok.</p>
+          <p>Satoshi Nakamoto posts a nine-page paper to the cryptography mailing list. It solves the double-spend problem without a trusted third party, using proof-of-work and a chain of blocks.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">3 Jan 2009 <span class="tag hot">Blok #0</span></div>
-          <h3>Blok genesis ditambang</h3>
-          <p>Imbalan 50 BTC yang tidak akan pernah bisa dibelanjakan. Judul koran The Times di coinbase-nya jadi stempel waktu sekaligus pernyataan sikap.</p>
+          <div class="tl-date">3 Jan 2009 <span class="tag hot">Block #0</span></div>
+          <h3>The genesis block is mined</h3>
+          <p>Its 50 BTC reward can never be spent. The Times headline in its coinbase serves as both a timestamp and a statement.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">9 Jan 2009 <span class="tag">v0.1</span></div>
-          <h3>Bitcoin v0.1 dirilis</h3>
-          <p>Perangkat lunak open source pertama untuk Windows. Siapa pun bisa menjalankan node dan menambang.</p>
+          <h3>Bitcoin v0.1 is released</h3>
+          <p>The first open-source software, for Windows. Anyone can run a node and mine.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">12 Jan 2009 <span class="tag">Blok #170</span></div>
-          <h3>Transaksi pertama: Satoshi → Hal Finney</h3>
-          <p>10 BTC berpindah tangan. Finney, yang sebelumnya membuat RPOW, menjadi orang pertama selain Satoshi yang menjalankan node.</p>
+          <div class="tl-date">12 Jan 2009 <span class="tag">Block #170</span></div>
+          <h3>First transaction: Satoshi → Hal Finney</h3>
+          <p>10 BTC changes hands. Finney, creator of RPOW, is the first person besides Satoshi to run a node.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">5 Okt 2009</div>
-          <h3>Harga pertama: US$1 = 1.309,03 BTC</h3>
-          <p>New Liberty Standard menghitung kurs dari biaya listrik untuk menambang satu bitcoin.</p>
+          <div class="tl-date">5 Oct 2009</div>
+          <h3>First price: US$1 = 1,309.03 BTC</h3>
+          <p>New Liberty Standard derives an exchange rate from the electricity cost of mining one bitcoin.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">22 Mei 2010 <span class="tag hot">Pizza Day</span></div>
-          <h3>10.000 BTC untuk dua pizza</h3>
-          <p>Laszlo Hanyecz melakukan pembelian barang nyata pertama yang terdokumentasi dengan bitcoin. Tanggal ini masih dirayakan tiap tahun.</p>
+          <div class="tl-date">22 May 2010 <span class="tag hot">Pizza Day</span></div>
+          <h3>10,000 BTC for two pizzas</h3>
+          <p>Laszlo Hanyecz makes the first documented purchase of real goods with bitcoin. The date is still celebrated every year.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">15 Agu 2010 <span class="tag">Blok #74.638</span></div>
-          <h3>Insiden value overflow</h3>
-          <p>Bug integer overflow menciptakan 184 miliar BTC. Dalam beberapa jam patch dirilis dan rantai di-fork kembali. Ini satu-satunya bug inflasi besar yang pernah dieksploitasi.</p>
+          <div class="tl-date">15 Aug 2010 <span class="tag">Block #74,638</span></div>
+          <h3>The value overflow incident</h3>
+          <p>An integer overflow bug creates 184 billion BTC. Within hours a patch is released and the chain is forked back. It remains the only major inflation bug ever exploited.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">Des 2010 – Apr 2011</div>
-          <h3>Satoshi menghilang</h3>
-          <p>Postingan forum terakhir pada 12 Desember 2010. Kendali proyek diserahkan ke Gavin Andresen, lalu Satoshi tidak pernah muncul lagi.</p>
+          <div class="tl-date">Dec 2010 – Apr 2011</div>
+          <h3>Satoshi disappears</h3>
+          <p>The last forum post is on 12 December 2010. Control of the project passes to Gavin Andresen, and Satoshi is never heard from again.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">28 Nov 2012 <span class="tag">Halving 1</span></div>
-          <h3>Imbalan blok turun 50 → 25 BTC</h3>
-          <p>Kebijakan moneter yang tertulis di kode berjalan persis sesuai jadwal di blok 210.000.</p>
+          <h3>Block reward drops 50 → 25 BTC</h3>
+          <p>Monetary policy written in code executes exactly on schedule at block 210,000.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">Feb 2014</div>
-          <h3>Runtuhnya Mt. Gox</h3>
-          <p>Bursa yang pernah memproses sebagian besar volume dunia kehilangan sekitar 850.000 BTC. Pelajaran yang terus diulang: <em>not your keys, not your coins</em>.</p>
+          <h3>The collapse of Mt. Gox</h3>
+          <p>The exchange that once handled most of the world's volume loses around 850,000 BTC. A lesson repeated ever since: <em>not your keys, not your coins</em>.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">9 Jul 2016 <span class="tag">Halving 2</span></div>
-          <h3>Imbalan blok turun ke 12,5 BTC</h3>
-          <p>Blok 420.000. Jaringan makin matang dan perdebatan soal skalabilitas memanas.</p>
+          <h3>Block reward drops to 12.5 BTC</h3>
+          <p>Block 420,000. The network matures and the scaling debate heats up.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">24 Agu 2017 <span class="tag hot">SegWit</span></div>
-          <h3>Segregated Witness aktif</h3>
-          <p>Soft fork di blok 481.824 memperbaiki malleability transaksi dan membuka jalan bagi Lightning. Tiga minggu sebelumnya, kubu blok besar memisahkan diri sebagai Bitcoin Cash.</p>
+          <div class="tl-date">24 Aug 2017 <span class="tag hot">SegWit</span></div>
+          <h3>Segregated Witness activates</h3>
+          <p>A soft fork at block 481,824 fixes transaction malleability and paves the way for Lightning. Three weeks earlier, the big-block camp split off as Bitcoin Cash.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">Mar 2018 <span class="tag">Layer 2</span></div>
-          <h3>Lightning Network di mainnet</h3>
-          <p>Kanal pembayaran off-chain untuk transaksi instan dan murah, tetap dijamin oleh blockchain Bitcoin.</p>
+          <h3>Lightning Network goes live on mainnet</h3>
+          <p>Off-chain payment channels for instant, cheap transactions, still secured by the Bitcoin blockchain.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">11 Mei 2020 <span class="tag">Halving 3</span></div>
-          <h3>Imbalan blok turun ke 6,25 BTC</h3>
-          <p>Terjadi di tengah pandemi dan stimulus moneter besar-besaran. Narasi "emas digital" makin menguat.</p>
+          <div class="tl-date">11 May 2020 <span class="tag">Halving 3</span></div>
+          <h3>Block reward drops to 6.25 BTC</h3>
+          <p>It happens amid a pandemic and massive monetary stimulus. The "digital gold" narrative grows stronger.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">7 Sep 2021</div>
-          <h3>El Salvador: alat pembayaran sah</h3>
-          <p>Negara pertama yang menjadikan bitcoin mata uang resmi di samping dolar AS.</p>
+          <h3>El Salvador makes it legal tender</h3>
+          <p>The first country to adopt bitcoin as official currency alongside the US dollar.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">14 Nov 2021 <span class="tag hot">Taproot</span></div>
-          <h3>Taproot &amp; tanda tangan Schnorr</h3>
-          <p>Upgrade terbesar sejak SegWit, aktif di blok 709.632. BIP 340–342 membawa tanda tangan yang bisa diagregasi dan skrip yang lebih privat.</p>
+          <h3>Taproot &amp; Schnorr signatures</h3>
+          <p>The biggest upgrade since SegWit, active at block 709,632. BIPs 340–342 bring aggregatable signatures and more private scripts.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">10 Jan 2024 <span class="tag">ETF</span></div>
-          <h3>SEC menyetujui ETF bitcoin spot</h3>
-          <p>Sebelas produk mulai diperdagangkan keesokan harinya. Bitcoin resmi masuk portofolio institusi arus utama.</p>
+          <h3>SEC approves spot bitcoin ETFs</h3>
+          <p>Eleven products begin trading the next day. Bitcoin officially enters mainstream institutional portfolios.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
           <div class="tl-date">20 Apr 2024 <span class="tag">Halving 4</span></div>
-          <h3>Imbalan blok turun ke 3,125 BTC</h3>
-          <p>Blok 840.000. Lebih dari 93% dari 21 juta BTC sudah ditambang.</p>
+          <h3>Block reward drops to 3.125 BTC</h3>
+          <p>Block 840,000. More than 93% of all 21 million BTC have been mined.</p>
         </div>
         <div class="tl-item reveal"><span class="tl-dot"></span>
-          <div class="tl-date">± 2140 <span class="tag">Satoshi terakhir</span></div>
-          <h3>Bitcoin terakhir ditambang</h3>
-          <p>Setelah 32 halving, imbalan blok menjadi nol. Penambang hanya dibayar dari biaya transaksi.</p>
+          <div class="tl-date">± 2140 <span class="tag">Last satoshi</span></div>
+          <h3>The last bitcoin is mined</h3>
+          <p>After 32 halvings, the block subsidy reaches zero. Miners are paid by transaction fees alone.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- CRYPTOGRAPHY -->
-  <section class="section" id="kriptografi" style="background: linear-gradient(180deg, var(--bg), var(--bg-2) 30%, var(--bg-2) 70%, var(--bg));">
+  <section class="section" id="cryptography" style="background: linear-gradient(180deg, var(--bg), var(--bg-2) 30%, var(--bg-2) 70%, var(--bg));">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 03 · Primitif</span>
-        <h2>Kepercayaan diganti <em>kriptografi</em></h2>
-        <p>Bitcoin tidak menciptakan algoritma baru. Ia merangkai primitif yang sudah teruji puluhan tahun menjadi sistem yang tidak membutuhkan otoritas pusat.</p>
+        <span class="eyebrow">Chapter 03 · Primitives</span>
+        <h2>Trust, replaced by <em>cryptography</em></h2>
+        <p>Bitcoin invented no new algorithms. It assembled primitives tested over decades into a system that needs no central authority.</p>
       </div>
 
       <div class="crypto-grid">
         <article class="card span-7 reveal">
-          <div class="kicker">01 · Fungsi hash</div>
-          <h3>SHA-256, dijalankan dua kali</h3>
-          <p>Semua hal di Bitcoin diidentifikasi dengan hash: blok, transaksi, sampai alamat. SHA-256 bersifat deterministik dan satu arah. Ubah satu bit input, dan rata-rata separuh bit output ikut berubah (<em>avalanche effect</em>).</p>
-          <p>Bitcoin memakai <code>SHA256(SHA256(x))</code> untuk ID blok dan transaksi, sebagai pertahanan terhadap serangan length-extension.</p>
-          <div class="spec">FIPS 180-4 · output 256 bit · 64 ronde kompresi · NSA/NIST 2001</div>
+          <div class="kicker">01 · Hash function</div>
+          <h3>SHA-256, applied twice</h3>
+          <p>Everything in Bitcoin is identified by a hash: blocks, transactions, even addresses. SHA-256 is deterministic and one-way. Flip one input bit and on average half the output bits change (the <em>avalanche effect</em>).</p>
+          <p>Bitcoin uses <code>SHA256(SHA256(x))</code> for block and transaction IDs, as a defense against length-extension attacks.</p>
+          <div class="spec">FIPS 180-4 · output 256 bit · 64 compression rounds · NSA/NIST 2001</div>
         </article>
 
         <article class="card span-5 reveal">
           <div class="kicker">02 · Proof-of-Work</div>
-          <h3>Lotere yang tidak bisa dicurangi</h3>
-          <p>Penambang mengganti <code>nonce</code> sampai hash header blok berada di bawah target. Satu-satunya cara adalah mencoba, sehingga menulis ulang sejarah butuh energi lebih besar dari seluruh jaringan.</p>
-          <p>Target disesuaikan tiap 2.016 blok agar rata-rata satu blok lahir setiap ~10 menit.</p>
-          <div class="spec">hash(header) &lt; target · retarget 2016 blok</div>
+          <h3>A lottery that cannot be rigged</h3>
+          <p>Miners vary the <code>nonce</code> until the block header hash falls below a target. The only way is to keep trying, so rewriting history costs more energy than the entire network.</p>
+          <p>The target adjusts every 2,016 blocks so that one block is found roughly every 10 minutes.</p>
+          <div class="spec">hash(header) &lt; target · retarget every 2016 blocks</div>
         </article>
 
         <article class="card span-6 reveal">
-          <div class="kicker">03 · Tanda tangan digital</div>
-          <h3>ECDSA di kurva secp256k1</h3>
-          <div class="curve-box" id="curve" aria-label="Grafik kurva eliptik y² = x³ + 7 di bilangan real"></div>
-          <p>Kunci privat adalah angka acak 256 bit <code>k</code>. Kunci publik <code>K = k·G</code> mudah dihitung, tetapi membalikkannya (masalah logaritma diskret) mustahil secara praktis.</p>
+          <div class="kicker">03 · Digital signatures</div>
+          <h3>ECDSA on the secp256k1 curve</h3>
+          <div class="curve-box" id="curve" aria-label="Plot of the elliptic curve y² = x³ + 7 over the real numbers"></div>
+          <p>A private key is a random 256-bit number <code>k</code>. The public key <code>K = k·G</code> is easy to compute, but reversing it (the discrete logarithm problem) is practically impossible.</p>
           <div class="spec">y² = x³ + 7 (mod p) · p = 2²⁵⁶ − 2³² − 977 · SEC 2</div>
         </article>
 
         <article class="card span-6 reveal">
-          <div class="kicker">04 · Struktur data</div>
+          <div class="kicker">04 · Data structure</div>
           <h3>Merkle tree</h3>
-          <div class="merkle" aria-label="Diagram Merkle tree dengan empat transaksi">
+          <div class="merkle" aria-label="Merkle tree diagram with four transactions">
             <svg viewBox="0 0 400 210" role="img">
               <g stroke="rgba(255,255,255,0.18)" fill="none" stroke-width="1">
                 <path d="M200 38 L110 92 M200 38 L290 92 M110 112 L60 166 M110 112 L160 166 M290 112 L240 166 M290 112 L340 166"/>
@@ -723,28 +723,28 @@
               </g>
             </svg>
           </div>
-          <p>Ribuan transaksi diringkas menjadi satu hash 32 byte di header. Dompet ringan (SPV) cukup meminta <em>Merkle proof</em> sepanjang log₂(n) untuk membuktikan sebuah transaksi ada di blok.</p>
+          <p>Thousands of transactions are summarized into a single 32-byte hash in the header. Light (SPV) wallets only need a <em>Merkle proof</em> of length log₂(n) to prove a transaction is in a block.</p>
           <div class="spec">Merkle 1979 · whitepaper §7–8</div>
         </article>
 
         <article class="card span-4 reveal">
           <div class="kicker">05 · Taproot</div>
           <h3>Schnorr signatures</h3>
-          <p>Tanda tangan linear yang bisa diagregasi: transaksi multisig terlihat sama seperti transaksi biasa. Lebih ringkas, lebih privat, dan terbukti aman secara formal.</p>
-          <div class="spec">BIP 340 · 64 byte · aktif Nov 2021</div>
+          <p>Linear, aggregatable signatures: a multisig transaction looks just like a regular one. Smaller, more private, and provably secure.</p>
+          <div class="spec">BIP 340 · 64 byte · active Nov 2021</div>
         </article>
 
         <article class="card span-4 reveal">
-          <div class="kicker">06 · Alamat</div>
+          <div class="kicker">06 · Addresses</div>
           <h3>HASH160 &amp; Bech32</h3>
-          <p>Kunci publik di-hash dengan <code>RIPEMD160(SHA256(K))</code> lalu dikodekan. Base58Check menghindari karakter mirip (0/O, l/I); Bech32 menambah deteksi kesalahan BCH.</p>
+          <p>The public key is hashed with <code>RIPEMD160(SHA256(K))</code> and then encoded. Base58Check avoids look-alike characters (0/O, l/I); Bech32 adds BCH error detection.</p>
           <div class="spec">1… legacy · 3… P2SH · bc1q… SegWit · bc1p… Taproot</div>
         </article>
 
         <article class="card span-4 reveal">
-          <div class="kicker">07 · Dompet</div>
+          <div class="kicker">07 · Wallets</div>
           <h3>HD wallet &amp; seed phrase</h3>
-          <p>Satu seed 12–24 kata (BIP 39) menurunkan pohon kunci tak terbatas lewat HMAC-SHA512 (BIP 32). Cadangkan sekali, pulihkan semuanya.</p>
+          <p>A single 12–24 word seed (BIP 39) derives an unlimited tree of keys via HMAC-SHA512 (BIP 32). Back up once, recover everything.</p>
           <div class="spec">BIP 32 · BIP 39 · BIP 44/84/86</div>
         </article>
       </div>
@@ -755,9 +755,9 @@
   <section class="section" id="lab">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 04 · Coba sendiri</span>
-        <h2>Laboratorium <em>hash</em></h2>
-        <p>Semua dihitung lokal di browser kamu dengan implementasi SHA-256 murni JavaScript. Tidak ada data yang dikirim ke mana pun.</p>
+        <span class="eyebrow">Chapter 04 · Try it yourself</span>
+        <h2>The <em>hash</em> lab</h2>
+        <p>Everything is computed locally in your browser with a pure JavaScript SHA-256 implementation. No data is sent anywhere.</p>
       </div>
 
       <div class="lab">
@@ -770,18 +770,18 @@
             <div class="field" style="margin-bottom:8px">OUTPUT · 64 HEX</div>
             <div class="hash-out" id="shaOut" aria-live="polite"></div>
           </div>
-          <div class="meter"><span id="diffLabel">Ubah satu huruf saja</span><div class="meter-bar"><i id="diffBar"></i></div><span id="diffPct">0%</span></div>
-          <p class="note">Coba ganti "Satoshi" jadi "satoshi". Bit yang berubah rata-rata mendekati 50%.</p>
+          <div class="meter"><span id="diffLabel">Change a single letter</span><div class="meter-bar"><i id="diffBar"></i></div><span id="diffPct">0%</span></div>
+          <p class="note">Try changing "Satoshi" to "satoshi". On average, close to 50% of the bits change.</p>
         </div>
 
         <div class="panel reveal">
-          <div class="panel-head"><h3>Mini penambang</h3><span>proof-of-work</span></div>
-          <label class="field">DATA BLOK
-            <input class="input" id="mineIn" value="Blok #1 · Alice → Bob · 1 BTC" spellcheck="false">
+          <div class="panel-head"><h3>Mini miner</h3><span>proof-of-work</span></div>
+          <label class="field">BLOCK DATA
+            <input class="input" id="mineIn" value="Block #1 · Alice → Bob · 1 BTC" spellcheck="false">
           </label>
           <div class="controls">
-            <span class="field" style="flex-direction:row;align-items:center">NOL DI DEPAN</span>
-            <div class="chips" role="group" aria-label="Tingkat kesulitan" id="diffChips">
+            <span class="field" style="flex-direction:row;align-items:center">LEADING ZEROS</span>
+            <div class="chips" role="group" aria-label="Difficulty" id="diffChips">
               <button type="button" data-d="2" aria-pressed="false">2</button>
               <button type="button" data-d="3" aria-pressed="false">3</button>
               <button type="button" data-d="4" aria-pressed="true">4</button>
@@ -791,12 +791,12 @@
           <div class="hash-out" id="mineOut">SHA256( data + nonce ) …</div>
           <dl class="stats-row">
             <div><dt>Nonce</dt><dd id="mNonce">0</dd></div>
-            <div><dt>Hash/detik</dt><dd id="mRate">—</dd></div>
-            <div><dt>Waktu</dt><dd id="mTime">—</dd></div>
+            <div><dt>Hashes/sec</dt><dd id="mRate">—</dd></div>
+            <div><dt>Time</dt><dd id="mTime">—</dd></div>
           </dl>
           <div class="controls">
-            <button class="btn" id="mineBtn" type="button">Mulai menambang</button>
-            <span class="note" id="mineNote">Tiap nol hex tambahan = 16× lebih sulit.</span>
+            <button class="btn" id="mineBtn" type="button">Start mining</button>
+            <span class="note" id="mineNote">Each extra hex zero = 16× harder.</span>
           </div>
         </div>
       </div>
@@ -807,39 +807,39 @@
   <section class="section" id="genesis" style="border-top:1px solid var(--line)">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 05 · Blok #0</span>
-        <h2>Verifikasi <em>blok genesis</em></h2>
-        <p>Header blok hanya 80 byte. Hash dua kali, balik urutan byte-nya, dan kamu akan mendapat hash yang sama persis dengan yang dihitung Satoshi pada 3 Januari 2009.</p>
+        <span class="eyebrow">Chapter 05 · Block #0</span>
+        <h2>Verify the <em>genesis block</em></h2>
+        <p>A block header is only 80 bytes. Hash it twice, reverse the byte order, and you get exactly the same hash Satoshi computed on 3 January 2009.</p>
       </div>
 
       <div class="genesis">
         <div class="panel reveal">
           <blockquote class="coinbase">"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"</blockquote>
           <table class="header-table">
-            <tr><th>Versi</th><td>1</td></tr>
-            <tr><th>Blok sebelumnya</th><td>0000…0000</td></tr>
+            <tr><th>Version</th><td>1</td></tr>
+            <tr><th>Previous block</th><td>0000…0000</td></tr>
             <tr><th>Merkle root</th><td>4a5e1e4b…a33b</td></tr>
-            <tr><th>Waktu</th><td>1231006505 <span style="color:var(--faint)">· 18:15:05 UTC</span></td></tr>
+            <tr><th>Time</th><td>1231006505 <span style="color:var(--faint)">· 18:15:05 UTC</span></td></tr>
             <tr><th>Bits (target)</th><td>1d00ffff</td></tr>
             <tr><th>Nonce</th><td>2083236893</td></tr>
           </table>
         </div>
 
         <div class="panel reveal">
-          <div class="panel-head"><h3>Header mentah · 80 byte</h3><span>little-endian</span></div>
+          <div class="panel-head"><h3>Raw header · 80 bytes</h3><span>little-endian</span></div>
           <div class="hexdump" id="hexdump"></div>
           <div class="legend">
-            <span style="--c:#b9a6ff">versi</span>
+            <span style="--c:#b9a6ff">version</span>
             <span style="--c:#5d5d6b">prev hash</span>
             <span style="--c:#7cc7ff">merkle root</span>
-            <span style="--c:#3ddc97">waktu</span>
+            <span style="--c:#3ddc97">time</span>
             <span style="--c:#ff8fa3">bits</span>
             <span style="--c:#f7931a">nonce</span>
           </div>
           <div class="controls">
-            <button class="btn" id="verifyBtn" type="button">Hitung SHA256²</button>
+            <button class="btn" id="verifyBtn" type="button">Compute SHA256²</button>
           </div>
-          <div class="verify-result" id="verifyOut" aria-live="polite">Tekan tombol untuk menghitung hash di browser kamu.</div>
+          <div class="verify-result" id="verifyOut" aria-live="polite">Press the button to compute the hash in your browser.</div>
         </div>
       </div>
     </div>
@@ -849,18 +849,18 @@
   <section class="section" id="halving" style="border-top:1px solid var(--line)">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 06 · Kebijakan moneter</span>
-        <h2>Kelangkaan yang <em>terprogram</em></h2>
-        <p>Setiap 210.000 blok (sekitar empat tahun), imbalan penambang dipotong setengah. Hasilnya deret geometri yang berhenti tepat di bawah 21 juta BTC.</p>
+        <span class="eyebrow">Chapter 06 · Monetary policy</span>
+        <h2><em>Programmed</em> scarcity</h2>
+        <p>Every 210,000 blocks (about four years), the miner reward is cut in half. The result is a geometric series that converges just below 21 million BTC.</p>
       </div>
 
       <div class="chart-card reveal">
         <div class="chart-legend">
-          <span style="--c:var(--accent)"><i></i>Imbalan per blok (BTC)</span>
-          <span style="--c:#ededf0"><i></i>Total pasokan (juta BTC)</span>
+          <span style="--c:var(--accent)"><i></i>Block reward (BTC)</span>
+          <span style="--c:#ededf0"><i></i>Total supply (million BTC)</span>
         </div>
         <div id="halvingChart"></div>
-        <div class="chart-tip" id="chartTip">Arahkan kursor atau ketuk batang untuk detail.</div>
+        <div class="chart-tip" id="chartTip">Hover or tap a bar for details.</div>
       </div>
 
       <dl class="epochs reveal" id="epochs"></dl>
@@ -868,35 +868,35 @@
   </section>
 
   <!-- REFERENCES -->
-  <section class="section" id="referensi" style="border-top:1px solid var(--line)">
+  <section class="section" id="references" style="border-top:1px solid var(--line)">
     <div class="wrap">
       <div class="section-head reveal">
-        <span class="eyebrow">Bab 07 · Sumber</span>
-        <h2>Referensi <em>terbuka</em></h2>
-        <p>Halaman ini disusun dari kode sumber, spesifikasi dan dokumen primer yang bisa kamu baca sendiri.</p>
+        <span class="eyebrow">Chapter 07 · Sources</span>
+        <h2><em>Open</em> references</h2>
+        <p>This page is built from source code, specifications and primary documents you can read yourself.</p>
       </div>
 
       <div class="refs">
         <div class="reveal">
           <h3>GitHub · open source</h3>
           <ul class="ref-list">
-            <li><a href="https://github.com/bitcoin/bitcoin" target="_blank" rel="noopener"><strong>bitcoin/bitcoin</strong><b class="arrow">↗</b><span>Bitcoin Core, implementasi referensi sejak 2009</span></a></li>
+            <li><a href="https://github.com/bitcoin/bitcoin" target="_blank" rel="noopener"><strong>bitcoin/bitcoin</strong><b class="arrow">↗</b><span>Bitcoin Core, the reference implementation since 2009</span></a></li>
             <li><a href="https://github.com/bitcoin/bips" target="_blank" rel="noopener"><strong>bitcoin/bips</strong><b class="arrow">↗</b><span>Bitcoin Improvement Proposals: SegWit, Taproot, BIP 32/39</span></a></li>
-            <li><a href="https://github.com/bitcoin-core/secp256k1" target="_blank" rel="noopener"><strong>bitcoin-core/secp256k1</strong><b class="arrow">↗</b><span>Pustaka C teroptimasi untuk ECDSA &amp; Schnorr</span></a></li>
+            <li><a href="https://github.com/bitcoin-core/secp256k1" target="_blank" rel="noopener"><strong>bitcoin-core/secp256k1</strong><b class="arrow">↗</b><span>Optimized C library for ECDSA &amp; Schnorr</span></a></li>
             <li><a href="https://github.com/bitcoinbook/bitcoinbook" target="_blank" rel="noopener"><strong>bitcoinbook/bitcoinbook</strong><b class="arrow">↗</b><span>Mastering Bitcoin, Andreas M. Antonopoulos &amp; David A. Harding</span></a></li>
-            <li><a href="https://github.com/lightning/bolts" target="_blank" rel="noopener"><strong>lightning/bolts</strong><b class="arrow">↗</b><span>Spesifikasi Lightning Network</span></a></li>
-            <li><a href="https://github.com/mempool/mempool" target="_blank" rel="noopener"><strong>mempool/mempool</strong><b class="arrow">↗</b><span>Explorer &amp; visualisasi blok open source</span></a></li>
+            <li><a href="https://github.com/lightning/bolts" target="_blank" rel="noopener"><strong>lightning/bolts</strong><b class="arrow">↗</b><span>Lightning Network specifications</span></a></li>
+            <li><a href="https://github.com/mempool/mempool" target="_blank" rel="noopener"><strong>mempool/mempool</strong><b class="arrow">↗</b><span>Open-source block explorer &amp; visualizer</span></a></li>
           </ul>
         </div>
         <div class="reveal">
-          <h3>Dokumen &amp; spesifikasi</h3>
+          <h3>Documents &amp; specifications</h3>
           <ul class="ref-list">
-            <li><a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener"><strong>Bitcoin Whitepaper</strong><b class="arrow">↗</b><span>Satoshi Nakamoto, 31 Oktober 2008</span></a></li>
-            <li><a href="https://nakamotoinstitute.org/" target="_blank" rel="noopener"><strong>Satoshi Nakamoto Institute</strong><b class="arrow">↗</b><span>Arsip email, postingan forum, dan literatur cypherpunk</span></a></li>
-            <li><a href="https://developer.bitcoin.org/" target="_blank" rel="noopener"><strong>Bitcoin Developer Docs</strong><b class="arrow">↗</b><span>Referensi protokol, format blok &amp; transaksi</span></a></li>
-            <li><a href="https://learnmeabitcoin.com/" target="_blank" rel="noopener"><strong>Learn Me A Bitcoin</strong><b class="arrow">↗</b><span>Penjelasan teknis visual, termasuk blok genesis</span></a></li>
+            <li><a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener"><strong>Bitcoin Whitepaper</strong><b class="arrow">↗</b><span>Satoshi Nakamoto, 31 October 2008</span></a></li>
+            <li><a href="https://nakamotoinstitute.org/" target="_blank" rel="noopener"><strong>Satoshi Nakamoto Institute</strong><b class="arrow">↗</b><span>Archive of emails, forum posts, and cypherpunk literature</span></a></li>
+            <li><a href="https://developer.bitcoin.org/" target="_blank" rel="noopener"><strong>Bitcoin Developer Docs</strong><b class="arrow">↗</b><span>Protocol reference, block &amp; transaction formats</span></a></li>
+            <li><a href="https://learnmeabitcoin.com/" target="_blank" rel="noopener"><strong>Learn Me A Bitcoin</strong><b class="arrow">↗</b><span>Visual technical explanations, including the genesis block</span></a></li>
             <li><a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final" target="_blank" rel="noopener"><strong>NIST FIPS 180-4</strong><b class="arrow">↗</b><span>Secure Hash Standard (SHA-256)</span></a></li>
-            <li><a href="https://www.secg.org/sec2-v2.pdf" target="_blank" rel="noopener"><strong>SEC 2: Recommended Elliptic Curve Domain Parameters</strong><b class="arrow">↗</b><span>Parameter resmi kurva secp256k1</span></a></li>
+            <li><a href="https://www.secg.org/sec2-v2.pdf" target="_blank" rel="noopener"><strong>SEC 2: Recommended Elliptic Curve Domain Parameters</strong><b class="arrow">↗</b><span>Official secp256k1 curve parameters</span></a></li>
           </ul>
         </div>
       </div>
@@ -906,7 +906,7 @@
 
 <footer>
   <div class="wrap">
-    <span>Dibuat untuk edukasi. Bukan saran keuangan.</span>
+    <span>Made for education. Not financial advice.</span>
     <span class="mono">000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f</span>
   </div>
 </footer>
@@ -975,7 +975,7 @@
   menuBtn.addEventListener("click", () => {
     const open = navLinks.classList.toggle("open");
     menuBtn.setAttribute("aria-expanded", open);
-    menuBtn.textContent = open ? "Tutup" : "Menu";
+    menuBtn.textContent = open ? "Close" : "Menu";
   });
   $$("a", navLinks).forEach((a) => a.addEventListener("click", () => {
     navLinks.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); menuBtn.textContent = "Menu";
@@ -1030,7 +1030,7 @@
     const hh = String(Math.floor((s % 86400) / 3600)).padStart(2, "0");
     const mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
     const ss = String(s % 60).padStart(2, "0");
-    since.textContent = `${d.toLocaleString("id-ID")}h ${hh}:${mm}:${ss}`;
+    since.textContent = `${d.toLocaleString("en-US")}d ${hh}:${mm}:${ss}`;
   }
   tickSince(); setInterval(tickSince, 1000);
 
@@ -1153,7 +1153,7 @@
         const bits = bitsDiff(prev, h);
         const p = Math.round((bits / 256) * 100);
         bar.style.width = p + "%"; pct.textContent = p + "%";
-        lbl.textContent = `${bits}/256 bit berubah`;
+        lbl.textContent = `${bits}/256 bits changed`;
       }
       prev = h;
     }
@@ -1170,20 +1170,20 @@
       $$("#diffChips button").forEach((x) => x.setAttribute("aria-pressed", "false"));
       b.setAttribute("aria-pressed", "true");
       difficulty = +b.dataset.d;
-      note.textContent = `Rata-rata ${(16 ** difficulty).toLocaleString("id-ID")} percobaan.`;
+      note.textContent = `${(16 ** difficulty).toLocaleString("en-US")} attempts on average.`;
     }));
     const paint = (h, d) => `<span class="z">${h.slice(0, d)}</span>${h.slice(d)}`;
     const fmt = (n) => n >= 1e6 ? (n / 1e6).toFixed(2) + " M" : n >= 1e3 ? (n / 1e3).toFixed(1) + " k" : String(Math.round(n));
 
-    function stop(msg) { mining = false; btn.textContent = "Mulai menambang"; if (msg) note.textContent = msg; }
+    function stop(msg) { mining = false; btn.textContent = "Start mining"; if (msg) note.textContent = msg; }
     btn.addEventListener("click", () => {
-      if (mining) return stop("Dihentikan.");
-      mining = true; btn.textContent = "Berhenti";
+      if (mining) return stop("Stopped.");
+      mining = true; btn.textContent = "Stop";
       const data = inp.value, d = difficulty, prefix = "0".repeat(d);
       const base = enc.encode(data);
       let nonce = 0;
       const t0 = performance.now();
-      note.textContent = "Mencari nonce…";
+      note.textContent = "Searching for a nonce…";
       function chunk() {
         if (!mining) return;
         const tEnd = performance.now() + 24;
@@ -1197,17 +1197,17 @@
             if (hex.startsWith(prefix)) {
               const dt = (performance.now() - t0) / 1000;
               out.innerHTML = paint(hex, d);
-              nonceEl.textContent = nonce.toLocaleString("id-ID");
+              nonceEl.textContent = nonce.toLocaleString("en-US");
               rateEl.textContent = fmt((nonce + 1) / Math.max(dt, 0.001));
               timeEl.textContent = dt.toFixed(2) + " s";
-              return stop(`Blok ditemukan setelah ${(nonce + 1).toLocaleString("id-ID")} percobaan.`);
+              return stop(`Block found after ${(nonce + 1).toLocaleString("en-US")} attempts.`);
             }
             nonce++;
           }
         }
         const dt = (performance.now() - t0) / 1000;
         out.innerHTML = paint(hex, 0);
-        nonceEl.textContent = nonce.toLocaleString("id-ID");
+        nonceEl.textContent = nonce.toLocaleString("en-US");
         rateEl.textContent = fmt(nonce / Math.max(dt, 0.001));
         timeEl.textContent = dt.toFixed(1) + " s";
         setTimeout(chunk, 0);
@@ -1241,11 +1241,11 @@
       let i = 0;
       const step = () => {
         i = Math.min(64, i + (reduceMotion ? 64 : 2));
-        outEl.innerHTML = `<span style="color:var(--faint)">SHA256(SHA256(header)), dibalik:</span><br>${shown.slice(0, i)}`;
+        outEl.innerHTML = `<span style="color:var(--faint)">SHA256(SHA256(header)), reversed:</span><br>${shown.slice(0, i)}`;
         if (i < 64) requestAnimationFrame(step);
         else outEl.innerHTML += ok
-          ? `<br><span class="okmark">✓ Cocok dengan hash blok genesis. Perhatikan 10 nol di depan: itulah bukti kerja.</span>`
-          : `<br>✗ Tidak cocok.`;
+          ? `<br><span class="okmark">✓ Matches the genesis block hash. Note the 10 leading zeros: that is the proof of work.</span>`
+          : `<br>✗ No match.`;
       };
       step();
     });
@@ -1267,7 +1267,7 @@
     const yS = (s) => pt + ih - (s / 21) * ih;
     const line = epochs.map((e, k) => `${k ? "L" : "M"}${(pl + bw * k + bw / 2).toFixed(1)} ${yS(e.supply).toFixed(1)}`).join("");
     const svg = `
-      <svg viewBox="0 0 ${Wd} ${Ht}" role="img" aria-label="Grafik imbalan blok dan total pasokan per epoch halving">
+      <svg viewBox="0 0 ${Wd} ${Ht}" role="img" aria-label="Chart of block reward and total supply per halving epoch">
         <g stroke="rgba(255,255,255,0.07)">
           ${[0, 0.25, 0.5, 0.75, 1].map((f) => `<line x1="${pl}" x2="${Wd - pr}" y1="${pt + ih * (1 - f)}" y2="${pt + ih * (1 - f)}"/>`).join("")}
         </g>
@@ -1289,13 +1289,13 @@
       </svg>`;
     $("#halvingChart").innerHTML = svg;
     const tip = $("#chartTip");
-    const nf = (n, d = 3) => n.toLocaleString("id-ID", { maximumFractionDigits: d });
+    const nf = (n, d = 3) => n.toLocaleString("en-US", { maximumFractionDigits: d });
     $$("#halvingChart .bar").forEach((g) => {
       const e = epochs[+g.dataset.k];
       const show = () => {
         $$("#halvingChart .bar .b").forEach((b) => b.style.opacity = "0.35");
         g.querySelector(".b").style.opacity = "1";
-        tip.innerHTML = `<b>${e.year}${e.future ? " (perkiraan)" : ""}</b> · blok ${nf(e.block)} · imbalan <b>${nf(e.reward, 5)} BTC</b> · pasokan di akhir epoch <b>${nf(e.supply, 2)} juta</b>`;
+        tip.innerHTML = `<b>${e.year}${e.future ? " (estimated)" : ""}</b> · block ${nf(e.block)} · reward <b>${nf(e.reward, 5)} BTC</b> · supply at end of epoch <b>${nf(e.supply, 2)} million</b>`;
       };
       const hide = () => $$("#halvingChart .bar .b").forEach((b) => b.style.opacity = "1");
       g.addEventListener("pointerenter", show);
@@ -1305,7 +1305,7 @@
       g.addEventListener("blur", hide);
     });
     $("#epochs").innerHTML = epochs.slice(0, 6).map((e) => `
-      <div><dt>${e.year}${e.future ? " · perkiraan" : ""}</dt><dd>${nf(e.reward, 5)} BTC</dd><small>blok ${nf(e.block)}</small></div>`).join("");
+      <div><dt>${e.year}${e.future ? " · estimated" : ""}</dt><dd>${nf(e.reward, 5)} BTC</dd><small>block ${nf(e.block)}</small></div>`).join("");
   })();
 })();
 </script>
