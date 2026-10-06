@@ -10,7 +10,7 @@ export default function Prologue() {
   return (
     <section className="section" id="prolog">
       <div className="wrap">
-        <SectionHead eyebrow={p.eyebrow} title={p.title} lede={p.lede} />
+        <SectionHead as="h1" eyebrow={p.eyebrow} title={p.title} lede={p.lede} />
         <div className="prolog reveal">
           {p.items.map(([year, title, text, who]) => (
             <article key={year}>

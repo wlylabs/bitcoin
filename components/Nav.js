@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 
@@ -11,9 +13,10 @@ const LANG_OPTIONS = [
 
 export default function Nav() {
   const { lang, setLang, t } = useLanguage();
+  const pathname = usePathname();
+  const current = pathname.split("/")[2] ?? "";
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [active, setActive] = useState(null);
   const progress = useRef(null);
 
   useEffect(() => {
@@ -38,7 +41,9 @@ export default function Nav() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, []);
+  }, [pathname]);
+
+  useEffect(() => setOpen(false), [pathname]);
 
   useEffect(() => {
     if (!open) return;
@@ -47,32 +52,27 @@ export default function Nav() {
     return () => window.removeEventListener("keydown", onKey);
   }, [open]);
 
-  useEffect(() => {
-    const spy = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
-      { rootMargin: "-45% 0px -50% 0px" }
-    );
-    document.querySelectorAll("main section[id]").forEach((s) => spy.observe(s));
-    return () => spy.disconnect();
-  }, []);
-
   return (
     <>
-      <a className="skip" href="#top">{t.skip}</a>
+      <a className="skip" href="#main">{t.skip}</a>
       <div className="progress" ref={progress} aria-hidden="true" />
       <header className={`nav${scrolled ? " scrolled" : ""}`}>
         <div className="wrap">
-          <a className="brand" href="#top" aria-label={t.nav.home}>
+          <Link className="brand" href={`/${lang}`} aria-label={t.nav.home}>
             <span className="brand-mark" aria-hidden="true">₿</span>
             <span className="brand-text">{t.nav.brand}</span>
-          </a>
+          </Link>
           <div className="nav-right">
             <ul className={`nav-links${open ? " open" : ""}`} id="navLinks">
-              {t.nav.links.map(([id, label]) => (
-                <li key={id}>
-                  <a href={`#${id}`} className={active === id ? "active" : undefined} onClick={() => setOpen(false)}>
+              {t.nav.links.map(([page, label]) => (
+                <li key={page}>
+                  <Link
+                    href={`/${lang}/${page}`}
+                    className={current === page ? "active" : undefined}
+                    aria-current={current === page ? "page" : undefined}
+                  >
                     {label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>
