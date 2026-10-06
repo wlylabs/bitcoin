@@ -436,7 +436,7 @@ main:focus { outline: none; }
 #chapters { padding-top: clamp(64px, 10vw, 112px); }
 .chapters {
   display: grid; gap: 16px; margin-top: 28px;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
 }
 .chapter-card {
   display: flex; flex-direction: column; gap: 12px;
@@ -468,3 +468,54 @@ main:focus { outline: none; }
 .next-chapter .title { font-family: var(--serif); font-size: clamp(44px, 8vw, 96px); line-height: 1; letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 0.3em; }
 .next-chapter .title b { font-family: var(--sans); font-weight: 400; font-size: 0.5em; color: var(--faint); transition: transform 0.4s var(--ease), color 0.3s; }
 .next-chapter a:hover .title b { transform: translateX(8px); color: var(--accent); }
+
+/* ---------- memecoins ---------- */
+.steps {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: 1px; background: var(--line);
+  border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+}
+.step { background: var(--bg); padding: 28px 24px 30px; }
+.step-num { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+.step h3 { font-size: 19px; font-weight: 500; margin: 12px 0 8px; letter-spacing: -0.01em; }
+.step p { margin: 0; color: var(--muted); font-size: 15px; }
+
+.race { display: flex; flex-direction: column; gap: 22px; }
+.race-row { display: grid; grid-template-columns: 110px 1fr; gap: 20px; align-items: start; }
+.race-token strong { display: block; font-family: var(--mono); font-weight: 500; font-size: 16px; }
+.race-token span { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.race-track { min-width: 0; }
+.race-bar {
+  height: 32px; border-radius: 6px; background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  display: flex; align-items: center; padding: 0 10px; min-width: max-content;
+}
+.race-bar span { font-family: var(--mono); font-size: 13px; color: var(--text); white-space: nowrap; }
+.race-dates { margin-top: 6px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
+.race-scale { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); text-align: right; }
+@media (max-width: 560px) {
+  .race-row { grid-template-columns: 1fr; gap: 8px; }
+  .race-token { display: flex; gap: 10px; align-items: baseline; }
+}
+
+.amm { display: grid; gap: 16px; grid-template-columns: 1fr; }
+@media (min-width: 960px) { .amm { grid-template-columns: 1fr 1fr; } }
+.amm-input { display: flex; align-items: center; gap: 14px; }
+.amm-input input[type="range"] { flex: 1; accent-color: var(--accent); min-width: 0; }
+.amm-input output { font-family: var(--mono); font-size: 15px; color: var(--text); min-width: 76px; text-align: right; }
+.amm-stats dd.warn { color: var(--accent); }
+.amm-chart { justify-content: center; }
+.amm-chart svg { width: 100%; height: auto; }
+.amm-legend { display: flex; justify-content: space-between; gap: 12px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
+
+.checklist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0 40px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.checklist li { display: flex; gap: 16px; padding: 20px 0; border-bottom: 1px solid var(--line); }
+.checklist .check {
+  flex: none; width: 26px; height: 26px; border-radius: 50%;
+  display: grid; place-items: center; font-size: 13px;
+  color: var(--accent); border: 1px solid rgba(247, 147, 26, 0.5);
+}
+.checklist h3 { margin: 2px 0 6px; font-size: 17px; font-weight: 500; }
+.checklist p { margin: 0; color: var(--muted); font-size: 15px; }
+.warning { margin: 28px 0 0; padding: 16px 18px; border: 1px dashed var(--line-strong); border-radius: 10px; color: var(--muted); font-size: 14px; }

@@ -15,7 +15,9 @@ export default function HistoryPage() {
   return (
     <PageShell>
       <Prologue />
-      <Timeline />
+      {/* Whitepaper, genesis, first transaction, Pizza Day, first halving, Mt. Gox,
+          SegWit, Taproot, spot ETFs, last satoshi. */}
+      <Timeline keyMoments={[1, 2, 4, 6, 9, 10, 12, 16, 17, 19]} />
       <Halving />
       <Sources ids={["whitepaper", "nakamoto", "core", "bitcoinbook", "bolts"]} />
       <NextChapter current="history" />

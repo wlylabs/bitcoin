@@ -6,13 +6,11 @@ import { useLanguage } from "./LanguageProvider";
 import Rich from "./Rich";
 import SectionHead from "./SectionHead";
 
-// Indexes into timeline.items shown by default: whitepaper, genesis, first transaction,
-// Pizza Day, first halving, Mt. Gox, SegWit, Taproot, spot ETFs, last satoshi.
-const KEY_MOMENTS = new Set([1, 2, 4, 6, 9, 10, 12, 16, 17, 19]);
-
-export default function Timeline() {
+// `source` names a timeline in lib/content.js; `keyMoments` lists the item indexes
+// shown before the reader expands the list (all items when omitted).
+export default function Timeline({ source = "timeline", keyMoments, id = "timeline-section", headAs = "h2" }) {
   const { t } = useLanguage();
-  const tl = t.timeline;
+  const tl = t[source];
   const box = useRef(null);
   const fill = useRef(null);
   const [all, setAll] = useState(false);
@@ -44,12 +42,13 @@ export default function Timeline() {
     };
   }, [all]);
 
-  const items = tl.items.map((item, i) => [item, i]).filter(([, i]) => all || KEY_MOMENTS.has(i));
+  const collapsible = Boolean(keyMoments);
+  const items = tl.items.map((item, i) => [item, i]).filter(([, i]) => all || !collapsible || keyMoments.includes(i));
 
   return (
-    <section className="section" id="timeline-section">
+    <section className="section" id={id}>
       <div className="wrap">
-        <SectionHead eyebrow={tl.eyebrow} title={tl.title} lede={tl.lede} />
+        <SectionHead as={headAs} eyebrow={tl.eyebrow} title={tl.title} lede={tl.lede} />
         <div className="timeline" ref={box}>
           <div className="tl-fill" ref={fill} aria-hidden="true" />
           {items.map(([[date, tag, hot, title, text], i]) => (
@@ -64,11 +63,13 @@ export default function Timeline() {
             </div>
           ))}
         </div>
-        <div className="tl-more">
-          <button className="btn ghost" type="button" aria-expanded={all} onClick={() => setAll((v) => !v)}>
-            {all ? tl.showKey : tl.showAll(tl.items.length)}
-          </button>
-        </div>
+        {collapsible && (
+          <div className="tl-more">
+            <button className="btn ghost" type="button" aria-expanded={all} onClick={() => setAll((v) => !v)}>
+              {all ? tl.showKey : tl.showAll(tl.items.length)}
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );
