@@ -3,6 +3,7 @@ import { Instrument_Serif, JetBrains_Mono, Space_Grotesk } from "next/font/googl
 import Footer from "@/components/Footer";
 import { LanguageProvider } from "@/components/LanguageProvider";
 import Nav from "@/components/Nav";
+import ServiceWorker from "@/components/ServiceWorker";
 import { LANGS } from "@/lib/content";
 import { pageMetadata } from "@/lib/metadata";
 import "../globals.css";
@@ -44,6 +45,7 @@ export default async function RootLayout({ children, params }) {
           <Nav />
           {children}
           <Footer />
+          <ServiceWorker />
         </LanguageProvider>
       </body>
     </html>

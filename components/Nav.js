@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import BitcoinLogo from "./BitcoinLogo";
 import { useLanguage } from "./LanguageProvider";
 
 // [route code, toggle label, full name for screen readers]
@@ -59,7 +60,7 @@ export default function Nav() {
       <header className={`nav${scrolled ? " scrolled" : ""}`}>
         <div className="wrap">
           <Link className="brand" href={`/${lang}`} aria-label={t.nav.home}>
-            <span className="brand-mark" aria-hidden="true">₿</span>
+            <BitcoinLogo className="brand-mark" />
             <span className="brand-text">{t.nav.brand}</span>
           </Link>
           <div className="nav-right">
