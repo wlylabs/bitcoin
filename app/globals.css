@@ -37,6 +37,9 @@ body {
 a { color: inherit; }
 img, svg, canvas { display: block; max-width: 100%; }
 button, input, textarea { font: inherit; color: inherit; }
+/* No blue tap flash or default focus box on click/tap; keyboard users still get the orange ring. */
+html { -webkit-tap-highlight-color: transparent; }
+:focus:not(:focus-visible) { outline: none; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
 
 .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
@@ -431,6 +434,7 @@ footer .mono { font-size: 12px; overflow-wrap: anywhere; min-width: 0; }
 }
 .skip:focus { transform: none; }
 main:focus { outline: none; }
+#halvingChart g[tabindex]:focus { outline: none; } /* focus is shown by highlighting the bar */
 
 /* ---------- home: chapter cards ---------- */
 #chapters { padding-top: clamp(64px, 10vw, 112px); }
