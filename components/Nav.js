@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 
+// [route code, toggle label, full name for screen readers]
+const LANG_OPTIONS = [
+  ["en", "EN", "English"],
+  ["id", "WKWK", "Bahasa Indonesia"],
+];
+
 export default function Nav() {
   const { lang, setLang, t } = useLanguage();
   const [open, setOpen] = useState(false);
@@ -71,9 +77,16 @@ export default function Nav() {
               ))}
             </ul>
             <div className="lang" role="group" aria-label={t.nav.langLabel}>
-              {["en", "id"].map((code) => (
-                <button key={code} type="button" lang={code} aria-pressed={lang === code} onClick={() => setLang(code)}>
-                  {code.toUpperCase()}
+              {LANG_OPTIONS.map(([code, label, name]) => (
+                <button
+                  key={code}
+                  type="button"
+                  lang={code}
+                  aria-label={`${label} (${name})`}
+                  aria-pressed={lang === code}
+                  onClick={() => setLang(code)}
+                >
+                  {label}
                 </button>
               ))}
             </div>
