@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sejarah Bitcoin</title>
+<meta name="description" content="Sejarah Bitcoin dari era cypherpunk hingga halving keempat, plus kriptografi di baliknya: SHA-256, secp256k1, Schnorr, Merkle tree dan proof-of-work. Bisa dicoba langsung di browser.">
+<meta name="theme-color" content="#07070a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23f7931a'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='700' font-size='36' text-anchor='middle' fill='%2307070a'%3E%E2%82%BF%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #07070a;
+    --bg-2: #0c0c11;
+    --surface: #111117;
+    --surface-2: #16161e;
+    --line: rgba(255, 255, 255, 0.08);
+    --line-strong: rgba(255, 255, 255, 0.16);
+    --text: #ededf0;
+    --muted: #9a9aa8;
+    --faint: #5d5d6b;
+    --accent: #f7931a;
+    --accent-soft: rgba(247, 147, 26, 0.14);
+    --accent-glow: rgba(247, 147, 26, 0.35);
+    --ok: #3ddc97;
+    --serif: "Instrument Serif", "Times New Roman", serif;
+    --sans: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+    --gutter: clamp(16px, 5vw, 64px);
+    --max: 1180px;
+    --radius: 14px;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--accent); color: var(--bg); }
+  a { color: inherit; }
+  img, svg, canvas { display: block; max-width: 100%; }
+  button, input, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+  /* Film grain + vignette for the cinematic feel */
+  body::after {
+    content: "";
+    position: fixed; inset: 0;
+    pointer-events: none;
+    z-index: 100;
+    opacity: 0.05;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .wrap { width: 100%; max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+  .mono { font-family: var(--mono); }
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex; align-items: center; gap: 10px;
+  }
+  .eyebrow::before { content: ""; width: 24px; height: 1px; background: currentColor; }
+
+  /* ---------- progress + nav ---------- */
+  .progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 100%;
+    transform-origin: 0 50%; transform: scaleX(0);
+    background: linear-gradient(90deg, transparent, var(--accent));
+    z-index: 60;
+  }
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    transition: background 0.4s var(--ease), border-color 0.4s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+  .nav.scrolled {
+    background: rgba(7, 7, 10, 0.72);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+    border-bottom-color: var(--line);
+  }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; letter-spacing: -0.01em; }
+  .brand-mark {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: grid; place-items: center;
+    background: var(--accent); color: var(--bg);
+    font-weight: 700; font-size: 16px;
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+  .nav-links { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  .nav-links a { text-decoration: none; font-size: 14px; color: var(--muted); transition: color 0.2s; }
+  .nav-links a:hover, .nav-links a.active { color: var(--text); }
+  .menu-btn {
+    display: none; background: none; border: 1px solid var(--line-strong);
+    border-radius: 999px; padding: 6px 14px; font-size: 13px; cursor: pointer;
+  }
+
+  @media (max-width: 820px) {
+    .menu-btn { display: block; }
+    .nav-links {
+      position: fixed; top: 64px; left: 0; right: 0;
+      flex-direction: column; gap: 0;
+      background: rgba(7, 7, 10, 0.96);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--line);
+      padding: 8px var(--gutter) 20px;
+      transform: translateY(-8px); opacity: 0; pointer-events: none;
+      transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+    }
+    .nav-links.open { opacity: 1; transform: none; pointer-events: auto; }
+    .nav-links a { display: block; padding: 14px 0; font-size: 17px; border-bottom: 1px solid var(--line); }
+  }
+
+  /* ---------- hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 100vh; min-height: 100svh;
+    display: flex; align-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  #rain { position: absolute; inset: 0; width: 100%; height: 100%; z-index: -2; }
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background:
+      radial-gradient(60% 50% at 50% 55%, transparent 0%, rgba(7,7,10,0.65) 60%, var(--bg) 100%),
+      linear-gradient(180deg, rgba(7,7,10,0.2) 0%, transparent 30%, transparent 70%, var(--bg) 100%);
+  }
+  .hero-inner { padding-top: 96px; padding-bottom: 96px; }
+  .headline-quote {
+    font-family: var(--mono);
+    font-size: clamp(11px, 1.6vw, 13px);
+    color: var(--muted);
+    border: 1px solid var(--line-strong);
+    border-radius: 999px;
+    padding: 8px 16px;
+    display: inline-flex; gap: 10px; align-items: center;
+    max-width: 100%;
+    background: rgba(7,7,10,0.5);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  }
+  .headline-quote b { color: var(--accent); font-weight: 500; white-space: nowrap; }
+  .headline-quote span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(56px, 13vw, 168px);
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+    margin: 28px 0 24px;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent); text-shadow: 0 0 60px var(--accent-glow); }
+  .hero .lede { max-width: 560px; color: var(--muted); font-size: clamp(16px, 2vw, 19px); margin: 0 0 40px; }
+  .hero-stats {
+    display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--line);
+    max-width: 720px;
+  }
+  .hero-stats div { padding: 18px 16px 0 0; }
+  .hero-stats dt { font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+  .hero-stats dd { margin: 6px 0 0; font-family: var(--mono); font-size: clamp(16px, 2.6vw, 24px); font-variant-numeric: tabular-nums; }
+  .scroll-cue {
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--faint);
+    display: flex; flex-direction: column; align-items: center; gap: 10px; text-decoration: none;
+  }
+  .scroll-cue i { width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent); animation: cue 2.2s var(--ease) infinite; transform-origin: top; }
+  @keyframes cue { 0% { transform: scaleY(0); } 50% { transform: scaleY(1); } 100% { transform: scaleY(1); opacity: 0; } }
+
+  /* staged intro */
+  .intro > * { opacity: 0; transform: translateY(24px); animation: rise 1.2s var(--ease) forwards; }
+  .intro > *:nth-child(2) { animation-delay: 0.15s; }
+  .intro > *:nth-child(3) { animation-delay: 0.3s; }
+  .intro > *:nth-child(4) { animation-delay: 0.45s; }
+  @keyframes rise { to { opacity: 1; transform: none; } }
+
+  /* ---------- sections ---------- */
+  section { position: relative; }
+  .section { padding: clamp(88px, 14vw, 160px) 0; }
+  .section-head { max-width: 720px; margin-bottom: clamp(48px, 8vw, 80px); }
+  .section-head h2 {
+    font-family: var(--serif); font-weight: 400;
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 1; letter-spacing: -0.02em;
+    margin: 18px 0 20px;
+  }
+  .section-head h2 em { color: var(--accent); }
+  .section-head p { color: var(--muted); font-size: clamp(16px, 1.8vw, 18px); margin: 0; }
+
+  .reveal { opacity: 0; transform: translateY(32px); transition: opacity 1s var(--ease), transform 1s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* chapter interstitial */
+  .chapter {
+    min-height: 70vh; display: grid; place-items: center; text-align: center;
+    padding: 80px var(--gutter);
+    border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+    background: radial-gradient(50% 60% at 50% 50%, var(--accent-soft), transparent 70%);
+  }
+  .chapter blockquote {
+    margin: 0; max-width: 880px;
+    font-family: var(--serif); font-style: italic;
+    font-size: clamp(30px, 5.4vw, 60px); line-height: 1.12; letter-spacing: -0.01em;
+  }
+  .chapter cite { display: block; margin-top: 28px; font-style: normal; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+
+  /* ---------- prolog grid ---------- */
+  .prolog {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+    gap: 1px; background: var(--line);
+    border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden;
+  }
+  .prolog article { background: var(--bg); padding: 28px 24px 30px; transition: background 0.3s; }
+  .prolog article:hover { background: var(--bg-2); }
+  .prolog .year { font-family: var(--mono); font-size: 13px; color: var(--accent); }
+  .prolog h3 { font-size: 19px; font-weight: 500; margin: 14px 0 8px; letter-spacing: -0.01em; }
+  .prolog p { margin: 0; color: var(--muted); font-size: 15px; }
+  .prolog .who { margin-top: 16px; font-family: var(--mono); font-size: 12px; color: var(--faint); }
+
+  /* ---------- timeline ---------- */
+  .timeline { position: relative; }
+  .timeline::before, .tl-fill {
+    content: ""; position: absolute; top: 0; bottom: 0;
+    left: 7px; width: 1px;
+  }
+  .timeline::before { background: var(--line); }
+  .tl-fill { background: linear-gradient(var(--accent), rgba(247,147,26,0.2)); transform-origin: top; transform: scaleY(0); }
+  .tl-item { position: relative; padding: 0 0 56px 44px; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-dot {
+    position: absolute; left: 0; top: 6px; width: 15px; height: 15px; border-radius: 50%;
+    background: var(--bg); border: 1px solid var(--line-strong);
+    transition: border-color 0.5s, box-shadow 0.5s, background 0.5s;
+  }
+  .tl-item.in .tl-dot { border-color: var(--accent); background: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft), 0 0 24px var(--accent-glow); }
+  .tl-date { font-family: var(--mono); font-size: 13px; color: var(--muted); display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; }
+  .tag { font-family: var(--mono); font-size: 11px; padding: 2px 8px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--muted); }
+  .tag.hot { border-color: rgba(247,147,26,0.5); color: var(--accent); }
+  .tl-item h3 { font-size: clamp(20px, 2.6vw, 26px); font-weight: 500; margin: 10px 0 8px; letter-spacing: -0.015em; line-height: 1.25; }
+  .tl-item p { margin: 0; color: var(--muted); max-width: 640px; }
+
+  @media (min-width: 900px) {
+    .timeline::before, .tl-fill { left: 50%; }
+    .tl-item { width: 50%; padding: 0 56px 72px 0; text-align: right; }
+    .tl-item .tl-date { justify-content: flex-end; }
+    .tl-item p { margin-left: auto; }
+    .tl-item .tl-dot { left: auto; right: -7px; }
+    .tl-item:nth-child(even) { margin-left: 50%; padding: 0 0 72px 56px; text-align: left; }
+    .tl-item:nth-child(even) .tl-date { justify-content: flex-start; }
+    .tl-item:nth-child(even) p { margin-left: 0; }
+    .tl-item:nth-child(even) .tl-dot { right: auto; left: -8px; }
+  }
+
+  /* ---------- crypto cards ---------- */
+  .crypto-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .card {
+    position: relative;
+    background: linear-gradient(180deg, var(--surface), var(--bg-2));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: clamp(22px, 3vw, 32px);
+    overflow: hidden;
+    grid-column: span 12;
+    transition: border-color 0.3s, transform 0.5s var(--ease);
+  }
+  .card::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(400px circle at var(--mx, 50%) var(--my, 0%), var(--accent-soft), transparent 45%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+  .card:hover { border-color: var(--line-strong); }
+  .card:hover::before { opacity: 1; }
+  .card .kicker { font-family: var(--mono); font-size: 12px; color: var(--accent); letter-spacing: 0.08em; }
+  .card h3 { font-size: clamp(22px, 2.6vw, 28px); font-weight: 500; letter-spacing: -0.02em; margin: 10px 0 10px; line-height: 1.2; }
+  .card p { color: var(--muted); margin: 0 0 14px; font-size: 15px; }
+  .card p:last-child { margin-bottom: 0; }
+  .card code { font-family: var(--mono); font-size: 0.88em; color: var(--text); background: var(--surface-2); border: 1px solid var(--line); border-radius: 6px; padding: 1px 6px; }
+  .card .spec { font-family: var(--mono); font-size: 12px; color: var(--faint); border-top: 1px solid var(--line); padding-top: 14px; margin-top: 18px; word-break: break-word; }
+  @media (min-width: 760px) {
+    .span-6 { grid-column: span 6; }
+    .span-4 { grid-column: span 6; }
+  }
+  @media (min-width: 1040px) {
+    .span-4 { grid-column: span 4; }
+    .span-7 { grid-column: span 7; }
+    .span-5 { grid-column: span 5; }
+  }
+  .curve-box { margin: 6px 0 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg); aspect-ratio: 16 / 10; }
+  .curve-box svg { width: 100%; height: 100%; }
+  .merkle { margin: 6px 0 18px; }
+  .merkle svg { width: 100%; height: auto; }
+
+  /* ---------- labs (interactive) ---------- */
+  .lab { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 960px) { .lab { grid-template-columns: 1fr 1fr; } }
+  .panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: clamp(20px, 3vw, 28px);
+    display: flex; flex-direction: column; gap: 16px;
+    min-width: 0;
+  }
+  .panel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .panel-head h3 { margin: 0; font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
+  .panel-head span { font-family: var(--mono); font-size: 12px; color: var(--faint); }
+  .field { display: flex; flex-direction: column; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--muted); letter-spacing: 0.04em; }
+  .input {
+    width: 100%; background: var(--bg); border: 1px solid var(--line-strong); border-radius: 10px;
+    padding: 12px 14px; font-family: var(--mono); font-size: 14px; resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .hash-out {
+    font-family: var(--mono); font-size: clamp(13px, 1.9vw, 15px); line-height: 1.7;
+    background: var(--bg); border: 1px solid var(--line); border-radius: 10px;
+    padding: 14px; word-break: break-all; min-height: 64px;
+    letter-spacing: 0.02em;
+  }
+  .hash-out .c { transition: color 0.9s var(--ease); }
+  .hash-out .c.flip { color: var(--accent); transition: none; }
+  .hash-out .z { color: var(--ok); }
+  .meter { display: flex; gap: 14px; align-items: center; font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .meter-bar { flex: 1; height: 4px; border-radius: 4px; background: var(--line); overflow: hidden; }
+  .meter-bar i { display: block; height: 100%; width: 0; background: var(--accent); transition: width 0.6s var(--ease); }
+  .stats-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  .stats-row div { background: var(--bg); padding: 12px; min-width: 0; }
+  .stats-row dt { font-family: var(--mono); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); }
+  .stats-row dd { margin: 4px 0 0; font-family: var(--mono); font-size: 15px; font-variant-numeric: tabular-nums; overflow: hidden; text-overflow: ellipsis; }
+  .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .chips { display: inline-flex; border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px; }
+  .chips button {
+    border: 0; background: none; cursor: pointer; border-radius: 999px;
+    padding: 6px 12px; font-family: var(--mono); font-size: 12px; color: var(--muted);
+    min-width: 40px;
+  }
+  .chips button[aria-pressed="true"] { background: var(--surface-2); color: var(--text); box-shadow: inset 0 0 0 1px var(--line-strong); }
+  .btn {
+    border: 0; cursor: pointer; border-radius: 999px;
+    padding: 11px 20px; font-weight: 500; font-size: 14px;
+    background: var(--accent); color: var(--bg);
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: transform 0.2s var(--ease), box-shadow 0.3s;
+    box-shadow: 0 0 0 0 var(--accent-glow);
+  }
+  .btn:hover { box-shadow: 0 0 32px var(--accent-glow); }
+  .btn:active { transform: scale(0.97); }
+  .btn.ghost { background: transparent; color: var(--text); border: 1px solid var(--line-strong); box-shadow: none; }
+  .btn.ghost:hover { border-color: var(--accent); }
+  .note { font-size: 13px; color: var(--faint); margin: 0; }
+
+  /* ---------- genesis ---------- */
+  .genesis { display: grid; gap: 16px; grid-template-columns: 1fr; }
+  @media (min-width: 960px) { .genesis { grid-template-columns: 5fr 7fr; } }
+  .header-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 13px; }
+  .header-table th, .header-table td { text-align: left; padding: 11px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .header-table th { color: var(--faint); font-weight: 400; width: 38%; padding-right: 12px; }
+  .header-table td { word-break: break-all; }
+  .header-table tr:last-child th, .header-table tr:last-child td { border-bottom: 0; }
+  .hexdump { font-family: var(--mono); font-size: clamp(11px, 1.6vw, 13px); line-height: 1.85; word-break: break-all; color: var(--faint); }
+  .hexdump .f { padding: 1px 0; border-radius: 3px; transition: color 0.3s, background 0.3s; }
+  .hexdump .f.v { color: #b9a6ff; }
+  .hexdump .f.p { color: var(--faint); }
+  .hexdump .f.m { color: #7cc7ff; }
+  .hexdump .f.t { color: var(--ok); }
+  .hexdump .f.b { color: #ff8fa3; }
+  .hexdump .f.n { color: var(--accent); }
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-family: var(--mono); font-size: 11px; color: var(--muted); }
+  .legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; background: var(--c); vertical-align: 0; }
+  .verify-result { font-family: var(--mono); font-size: 13px; padding: 14px; border-radius: 10px; border: 1px dashed var(--line-strong); color: var(--muted); word-break: break-all; min-height: 52px; }
+  .verify-result.ok { border-style: solid; border-color: rgba(61,220,151,0.45); color: var(--text); background: rgba(61,220,151,0.06); }
+  .verify-result .okmark { color: var(--ok); }
+  .coinbase {
+    font-family: var(--serif); font-style: italic; font-size: clamp(22px, 3.2vw, 32px); line-height: 1.25;
+    border-left: 2px solid var(--accent); padding-left: 18px; margin: 0;
+  }
+
+  /* ---------- halving chart ---------- */
+  .chart-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
+  .chart-legend { display: flex; gap: 20px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); margin-bottom: 18px; }
+  .chart-legend span { display: inline-flex; align-items: center; gap: 8px; }
+  .chart-legend i { width: 14px; height: 3px; background: var(--c); border-radius: 2px; }
+  #halving svg { width: 100%; height: auto; overflow: visible; }
+  #halving text { font-family: var(--mono); }
+  .chart-tip { margin-top: 16px; font-family: var(--mono); font-size: 13px; color: var(--muted); min-height: 22px; }
+  .chart-tip b { color: var(--text); font-weight: 500; }
+  .epochs { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; margin-top: 16px; }
+  .epochs div { background: var(--bg); padding: 16px; }
+  .epochs dt { font-family: var(--mono); font-size: 11px; color: var(--faint); }
+  .epochs dd { margin: 6px 0 0; font-family: var(--mono); font-size: 18px; }
+  .epochs small { display: block; color: var(--muted); font-size: 12px; font-family: var(--mono); margin-top: 2px; }
+
+  /* ---------- references ---------- */
+  .refs { display: grid; gap: 40px; grid-template-columns: 1fr; }
+  @media (min-width: 860px) { .refs { grid-template-columns: 1fr 1fr; } }
+  .refs h3 { font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); font-weight: 400; margin: 0 0 8px; }
+  .ref-list { list-style: none; margin: 0; padding: 0; }
+  .ref-list a {
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; align-items: baseline;
+    padding: 16px 0; border-bottom: 1px solid var(--line); text-decoration: none;
+    transition: padding 0.3s var(--ease);
+  }
+  .ref-list a:hover { padding-left: 8px; }
+  .ref-list a:hover .arrow { color: var(--accent); transform: translate(3px, -3px); }
+  .ref-list strong { font-weight: 500; font-size: 16px; overflow-wrap: anywhere; }
+  .ref-list span { grid-column: 1 / -1; color: var(--muted); font-size: 14px; }
+  .ref-list .arrow { font-family: var(--mono); color: var(--faint); transition: transform 0.3s var(--ease), color 0.3s; }
+
+  footer { border-top: 1px solid var(--line); padding: 48px 0 calc(48px + env(safe-area-inset-bottom)); color: var(--faint); font-size: 13px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center; }
+  footer .mono { font-size: 12px; overflow-wrap: anywhere; min-width: 0; }
+
+  @media (max-width: 560px) {
+    .hero-stats dd { font-size: 15px; }
+    .stats-row dd { font-size: 13px; }
+    .header-table th { width: 34%; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    .reveal, .intro > * { opacity: 1; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress" id="progress" aria-hidden="true"></div>
+
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Sejarah Bitcoin, ke atas">
+      <span class="brand-mark" aria-hidden="true">₿</span>
+      <span>Sejarah Bitcoin</span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="navLinks">Menu</button>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#prolog">Prolog</a></li>
+      <li><a href="#sejarah">Lini Masa</a></li>
+      <li><a href="#kriptografi">Kriptografi</a></li>
+      <li><a href="#lab">Lab</a></li>
+      <li><a href="#genesis">Genesis</a></li>
+      <li><a href="#halving">Halving</a></li>
+      <li><a href="#referensi">Referensi</a></li>
+    </ul>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Pembuka">
+    <canvas id="rain" aria-hidden="true"></canvas>
+    <div class="wrap hero-inner intro">
+      <div class="headline-quote" title="Pesan yang tertanam di coinbase blok #0">
+        <b>Blok #0</b><span>"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"</span>
+      </div>
+      <h1>Uang yang ditulis<br>dengan <em>matematika</em></h1>
+      <p class="lede">Dari milis cypherpunk hingga jaringan bernilai triliunan dolar. Ini kisah Bitcoin, dan kriptografi di baliknya yang bisa kamu coba langsung di halaman ini.</p>
+      <dl class="hero-stats">
+        <div><dt>Sejak genesis</dt><dd id="since">—</dd></div>
+        <div><dt>Pasokan maks</dt><dd>21.000.000</dd></div>
+        <div><dt>Hash</dt><dd>SHA-256²</dd></div>
+      </dl>
+    </div>
+    <a class="scroll-cue" href="#prolog" aria-label="Gulir ke prolog">GULIR<i></i></a>
+  </section>
+
+  <!-- PROLOG -->
+  <section class="section" id="prolog">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 01 · 1976–2005</span>
+        <h2>Sebelum Satoshi, ada <em>cypherpunk</em></h2>
+        <p>Bitcoin tidak muncul tiba-tiba. Hampir tiga dekade riset kriptografi dan upaya uang digital yang gagal menyiapkan semua bahannya.</p>
+      </div>
+      <div class="prolog reveal">
+        <article>
+          <div class="year">1976</div>
+          <h3>Kriptografi kunci publik</h3>
+          <p>Makalah "New Directions in Cryptography" memperkenalkan pertukaran kunci tanpa rahasia bersama, fondasi tanda tangan digital.</p>
+          <div class="who">Whitfield Diffie & Martin Hellman</div>
+        </article>
+        <article>
+          <div class="year">1982</div>
+          <h3>Blind signatures &amp; eCash</h3>
+          <p>Chaum merancang pembayaran yang tidak bisa dilacak. Lewat DigiCash (1989) idenya jadi produk, tapi masih bergantung pada satu server pusat.</p>
+          <div class="who">David Chaum</div>
+        </article>
+        <article>
+          <div class="year">1985</div>
+          <h3>Kriptografi kurva eliptik</h3>
+          <p>Diusulkan secara terpisah oleh dua peneliti. ECC menawarkan keamanan setara RSA dengan kunci yang jauh lebih pendek.</p>
+          <div class="who">Neal Koblitz & Victor Miller</div>
+        </article>
+        <article>
+          <div class="year">1991</div>
+          <h3>Rantai hash bertanda waktu</h3>
+          <p>Dokumen diberi stempel waktu dan dirangkai dengan hash sehingga riwayatnya tidak bisa diubah. Makalah ini dikutip tiga kali di whitepaper Bitcoin.</p>
+          <div class="who">Stuart Haber & W. Scott Stornetta</div>
+        </article>
+        <article>
+          <div class="year">1992</div>
+          <h3>Milis Cypherpunks</h3>
+          <p>Komunitas yang percaya privasi harus dijaga dengan kode. "A Cypherpunk's Manifesto" terbit tahun berikutnya.</p>
+          <div class="who">Eric Hughes, Timothy May, John Gilmore</div>
+        </article>
+        <article>
+          <div class="year">1997</div>
+          <h3>Hashcash</h3>
+          <p>Proof-of-work untuk melawan spam email. Satoshi memakai mekanisme yang sama untuk mengamankan blockchain.</p>
+          <div class="who">Adam Back</div>
+        </article>
+        <article>
+          <div class="year">1998</div>
+          <h3>b-money</h3>
+          <p>Usulan uang terdistribusi dengan buku besar bersama dan pembuatan uang lewat komputasi. Dikutip langsung di whitepaper.</p>
+          <div class="who">Wei Dai</div>
+        </article>
+        <article>
+          <div class="year">2004 – 2005</div>
+          <h3>RPOW &amp; Bit Gold</h3>
+          <p>Token proof-of-work yang bisa dipakai ulang, dan "emas digital" berantai hash. Keduanya hampir menyelesaikan masalah double-spend.</p>
+          <div class="who">Hal Finney · Nick Szabo</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="chapter">
+    <blockquote class="reveal">
+      "A purely peer-to-peer version of electronic cash would allow online payments to be sent directly from one party to another without going through a financial institution."
+      <cite>Satoshi Nakamoto · Bitcoin Whitepaper, 2008</cite>
+    </blockquote>
+  </div>
+
+  <!-- TIMELINE -->
+  <section class="section" id="sejarah">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 02 · 2008–sekarang</span>
+        <h2>Lini masa <em>Bitcoin</em></h2>
+        <p>Momen yang membentuk jaringan: dari sembilan halaman PDF sampai ETF di Wall Street.</p>
+      </div>
+
+      <div class="timeline" id="timeline">
+        <div class="tl-fill" id="tlFill" aria-hidden="true"></div>
+
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">18 Agu 2008 <span class="tag">bitcoin.org</span></div>
+          <h3>Domain bitcoin.org didaftarkan</h3>
+          <p>Dua bulan sebelum whitepaper beredar, panggungnya sudah disiapkan secara anonim.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">31 Okt 2008 <span class="tag hot">Whitepaper</span></div>
+          <h3>"Bitcoin: A Peer-to-Peer Electronic Cash System"</h3>
+          <p>Satoshi Nakamoto mengirim makalah sembilan halaman ke milis kriptografi. Isinya menjawab masalah double-spend tanpa pihak ketiga, dengan proof-of-work dan rantai blok.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">3 Jan 2009 <span class="tag hot">Blok #0</span></div>
+          <h3>Blok genesis ditambang</h3>
+          <p>Imbalan 50 BTC yang tidak akan pernah bisa dibelanjakan. Judul koran The Times di coinbase-nya jadi stempel waktu sekaligus pernyataan sikap.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">9 Jan 2009 <span class="tag">v0.1</span></div>
+          <h3>Bitcoin v0.1 dirilis</h3>
+          <p>Perangkat lunak open source pertama untuk Windows. Siapa pun bisa menjalankan node dan menambang.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">12 Jan 2009 <span class="tag">Blok #170</span></div>
+          <h3>Transaksi pertama: Satoshi → Hal Finney</h3>
+          <p>10 BTC berpindah tangan. Finney, yang sebelumnya membuat RPOW, menjadi orang pertama selain Satoshi yang menjalankan node.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">5 Okt 2009</div>
+          <h3>Harga pertama: US$1 = 1.309,03 BTC</h3>
+          <p>New Liberty Standard menghitung kurs dari biaya listrik untuk menambang satu bitcoin.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">22 Mei 2010 <span class="tag hot">Pizza Day</span></div>
+          <h3>10.000 BTC untuk dua pizza</h3>
+          <p>Laszlo Hanyecz melakukan pembelian barang nyata pertama yang terdokumentasi dengan bitcoin. Tanggal ini masih dirayakan tiap tahun.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">15 Agu 2010 <span class="tag">Blok #74.638</span></div>
+          <h3>Insiden value overflow</h3>
+          <p>Bug integer overflow menciptakan 184 miliar BTC. Dalam beberapa jam patch dirilis dan rantai di-fork kembali. Ini satu-satunya bug inflasi besar yang pernah dieksploitasi.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">Des 2010 – Apr 2011</div>
+          <h3>Satoshi menghilang</h3>
+          <p>Postingan forum terakhir pada 12 Desember 2010. Kendali proyek diserahkan ke Gavin Andresen, lalu Satoshi tidak pernah muncul lagi.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">28 Nov 2012 <span class="tag">Halving 1</span></div>
+          <h3>Imbalan blok turun 50 → 25 BTC</h3>
+          <p>Kebijakan moneter yang tertulis di kode berjalan persis sesuai jadwal di blok 210.000.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">Feb 2014</div>
+          <h3>Runtuhnya Mt. Gox</h3>
+          <p>Bursa yang pernah memproses sebagian besar volume dunia kehilangan sekitar 850.000 BTC. Pelajaran yang terus diulang: <em>not your keys, not your coins</em>.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">9 Jul 2016 <span class="tag">Halving 2</span></div>
+          <h3>Imbalan blok turun ke 12,5 BTC</h3>
+          <p>Blok 420.000. Jaringan makin matang dan perdebatan soal skalabilitas memanas.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">24 Agu 2017 <span class="tag hot">SegWit</span></div>
+          <h3>Segregated Witness aktif</h3>
+          <p>Soft fork di blok 481.824 memperbaiki malleability transaksi dan membuka jalan bagi Lightning. Tiga minggu sebelumnya, kubu blok besar memisahkan diri sebagai Bitcoin Cash.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">Mar 2018 <span class="tag">Layer 2</span></div>
+          <h3>Lightning Network di mainnet</h3>
+          <p>Kanal pembayaran off-chain untuk transaksi instan dan murah, tetap dijamin oleh blockchain Bitcoin.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">11 Mei 2020 <span class="tag">Halving 3</span></div>
+          <h3>Imbalan blok turun ke 6,25 BTC</h3>
+          <p>Terjadi di tengah pandemi dan stimulus moneter besar-besaran. Narasi "emas digital" makin menguat.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">7 Sep 2021</div>
+          <h3>El Salvador: alat pembayaran sah</h3>
+          <p>Negara pertama yang menjadikan bitcoin mata uang resmi di samping dolar AS.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">14 Nov 2021 <span class="tag hot">Taproot</span></div>
+          <h3>Taproot &amp; tanda tangan Schnorr</h3>
+          <p>Upgrade terbesar sejak SegWit, aktif di blok 709.632. BIP 340–342 membawa tanda tangan yang bisa diagregasi dan skrip yang lebih privat.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">10 Jan 2024 <span class="tag">ETF</span></div>
+          <h3>SEC menyetujui ETF bitcoin spot</h3>
+          <p>Sebelas produk mulai diperdagangkan keesokan harinya. Bitcoin resmi masuk portofolio institusi arus utama.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">20 Apr 2024 <span class="tag">Halving 4</span></div>
+          <h3>Imbalan blok turun ke 3,125 BTC</h3>
+          <p>Blok 840.000. Lebih dari 93% dari 21 juta BTC sudah ditambang.</p>
+        </div>
+        <div class="tl-item reveal"><span class="tl-dot"></span>
+          <div class="tl-date">± 2140 <span class="tag">Satoshi terakhir</span></div>
+          <h3>Bitcoin terakhir ditambang</h3>
+          <p>Setelah 32 halving, imbalan blok menjadi nol. Penambang hanya dibayar dari biaya transaksi.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CRYPTOGRAPHY -->
+  <section class="section" id="kriptografi" style="background: linear-gradient(180deg, var(--bg), var(--bg-2) 30%, var(--bg-2) 70%, var(--bg));">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 03 · Primitif</span>
+        <h2>Kepercayaan diganti <em>kriptografi</em></h2>
+        <p>Bitcoin tidak menciptakan algoritma baru. Ia merangkai primitif yang sudah teruji puluhan tahun menjadi sistem yang tidak membutuhkan otoritas pusat.</p>
+      </div>
+
+      <div class="crypto-grid">
+        <article class="card span-7 reveal">
+          <div class="kicker">01 · Fungsi hash</div>
+          <h3>SHA-256, dijalankan dua kali</h3>
+          <p>Semua hal di Bitcoin diidentifikasi dengan hash: blok, transaksi, sampai alamat. SHA-256 bersifat deterministik dan satu arah. Ubah satu bit input, dan rata-rata separuh bit output ikut berubah (<em>avalanche effect</em>).</p>
+          <p>Bitcoin memakai <code>SHA256(SHA256(x))</code> untuk ID blok dan transaksi, sebagai pertahanan terhadap serangan length-extension.</p>
+          <div class="spec">FIPS 180-4 · output 256 bit · 64 ronde kompresi · NSA/NIST 2001</div>
+        </article>
+
+        <article class="card span-5 reveal">
+          <div class="kicker">02 · Proof-of-Work</div>
+          <h3>Lotere yang tidak bisa dicurangi</h3>
+          <p>Penambang mengganti <code>nonce</code> sampai hash header blok berada di bawah target. Satu-satunya cara adalah mencoba, sehingga menulis ulang sejarah butuh energi lebih besar dari seluruh jaringan.</p>
+          <p>Target disesuaikan tiap 2.016 blok agar rata-rata satu blok lahir setiap ~10 menit.</p>
+          <div class="spec">hash(header) &lt; target · retarget 2016 blok</div>
+        </article>
+
+        <article class="card span-6 reveal">
+          <div class="kicker">03 · Tanda tangan digital</div>
+          <h3>ECDSA di kurva secp256k1</h3>
+          <div class="curve-box" id="curve" aria-label="Grafik kurva eliptik y² = x³ + 7 di bilangan real"></div>
+          <p>Kunci privat adalah angka acak 256 bit <code>k</code>. Kunci publik <code>K = k·G</code> mudah dihitung, tetapi membalikkannya (masalah logaritma diskret) mustahil secara praktis.</p>
+          <div class="spec">y² = x³ + 7 (mod p) · p = 2²⁵⁶ − 2³² − 977 · SEC 2</div>
+        </article>
+
+        <article class="card span-6 reveal">
+          <div class="kicker">04 · Struktur data</div>
+          <h3>Merkle tree</h3>
+          <div class="merkle" aria-label="Diagram Merkle tree dengan empat transaksi">
+            <svg viewBox="0 0 400 210" role="img">
+              <g stroke="rgba(255,255,255,0.18)" fill="none" stroke-width="1">
+                <path d="M200 38 L110 92 M200 38 L290 92 M110 112 L60 166 M110 112 L160 166 M290 112 L240 166 M290 112 L340 166"/>
+              </g>
+              <g font-family="JetBrains Mono, monospace" font-size="11" text-anchor="middle">
+                <rect x="140" y="12" width="120" height="28" rx="6" fill="rgba(247,147,26,0.14)" stroke="#f7931a"/>
+                <text x="200" y="30" fill="#f7931a">Merkle root</text>
+                <rect x="70" y="90" width="80" height="24" rx="6" fill="#0c0c11" stroke="rgba(255,255,255,0.18)"/>
+                <text x="110" y="106" fill="#ededf0">H(AB)</text>
+                <rect x="250" y="90" width="80" height="24" rx="6" fill="#0c0c11" stroke="rgba(255,255,255,0.18)"/>
+                <text x="290" y="106" fill="#ededf0">H(CD)</text>
+                <rect x="30" y="164" width="60" height="24" rx="6" fill="#0c0c11" stroke="rgba(255,255,255,0.18)"/>
+                <text x="60" y="180" fill="#9a9aa8">tx A</text>
+                <rect x="130" y="164" width="60" height="24" rx="6" fill="#0c0c11" stroke="rgba(255,255,255,0.18)"/>
+                <text x="160" y="180" fill="#9a9aa8">tx B</text>
+                <rect x="210" y="164" width="60" height="24" rx="6" fill="#0c0c11" stroke="rgba(255,255,255,0.18)"/>
+                <text x="240" y="180" fill="#9a9aa8">tx C</text>
+                <rect x="310" y="164" width="60" height="24" rx="6" fill="#0c0c11" stroke="rgba(255,255,255,0.18)"/>
+                <text x="340" y="180" fill="#9a9aa8">tx D</text>
+              </g>
+            </svg>
+          </div>
+          <p>Ribuan transaksi diringkas menjadi satu hash 32 byte di header. Dompet ringan (SPV) cukup meminta <em>Merkle proof</em> sepanjang log₂(n) untuk membuktikan sebuah transaksi ada di blok.</p>
+          <div class="spec">Merkle 1979 · whitepaper §7–8</div>
+        </article>
+
+        <article class="card span-4 reveal">
+          <div class="kicker">05 · Taproot</div>
+          <h3>Schnorr signatures</h3>
+          <p>Tanda tangan linear yang bisa diagregasi: transaksi multisig terlihat sama seperti transaksi biasa. Lebih ringkas, lebih privat, dan terbukti aman secara formal.</p>
+          <div class="spec">BIP 340 · 64 byte · aktif Nov 2021</div>
+        </article>
+
+        <article class="card span-4 reveal">
+          <div class="kicker">06 · Alamat</div>
+          <h3>HASH160 &amp; Bech32</h3>
+          <p>Kunci publik di-hash dengan <code>RIPEMD160(SHA256(K))</code> lalu dikodekan. Base58Check menghindari karakter mirip (0/O, l/I); Bech32 menambah deteksi kesalahan BCH.</p>
+          <div class="spec">1… legacy · 3… P2SH · bc1q… SegWit · bc1p… Taproot</div>
+        </article>
+
+        <article class="card span-4 reveal">
+          <div class="kicker">07 · Dompet</div>
+          <h3>HD wallet &amp; seed phrase</h3>
+          <p>Satu seed 12–24 kata (BIP 39) menurunkan pohon kunci tak terbatas lewat HMAC-SHA512 (BIP 32). Cadangkan sekali, pulihkan semuanya.</p>
+          <div class="spec">BIP 32 · BIP 39 · BIP 44/84/86</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAB -->
+  <section class="section" id="lab">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 04 · Coba sendiri</span>
+        <h2>Laboratorium <em>hash</em></h2>
+        <p>Semua dihitung lokal di browser kamu dengan implementasi SHA-256 murni JavaScript. Tidak ada data yang dikirim ke mana pun.</p>
+      </div>
+
+      <div class="lab">
+        <div class="panel reveal">
+          <div class="panel-head"><h3>Avalanche effect</h3><span>SHA-256</span></div>
+          <label class="field">INPUT
+            <textarea class="input" id="shaIn" rows="3" spellcheck="false">Satoshi Nakamoto</textarea>
+          </label>
+          <div>
+            <div class="field" style="margin-bottom:8px">OUTPUT · 64 HEX</div>
+            <div class="hash-out" id="shaOut" aria-live="polite"></div>
+          </div>
+          <div class="meter"><span id="diffLabel">Ubah satu huruf saja</span><div class="meter-bar"><i id="diffBar"></i></div><span id="diffPct">0%</span></div>
+          <p class="note">Coba ganti "Satoshi" jadi "satoshi". Bit yang berubah rata-rata mendekati 50%.</p>
+        </div>
+
+        <div class="panel reveal">
+          <div class="panel-head"><h3>Mini penambang</h3><span>proof-of-work</span></div>
+          <label class="field">DATA BLOK
+            <input class="input" id="mineIn" value="Blok #1 · Alice → Bob · 1 BTC" spellcheck="false">
+          </label>
+          <div class="controls">
+            <span class="field" style="flex-direction:row;align-items:center">NOL DI DEPAN</span>
+            <div class="chips" role="group" aria-label="Tingkat kesulitan" id="diffChips">
+              <button type="button" data-d="2" aria-pressed="false">2</button>
+              <button type="button" data-d="3" aria-pressed="false">3</button>
+              <button type="button" data-d="4" aria-pressed="true">4</button>
+              <button type="button" data-d="5" aria-pressed="false">5</button>
+            </div>
+          </div>
+          <div class="hash-out" id="mineOut">SHA256( data + nonce ) …</div>
+          <dl class="stats-row">
+            <div><dt>Nonce</dt><dd id="mNonce">0</dd></div>
+            <div><dt>Hash/detik</dt><dd id="mRate">—</dd></div>
+            <div><dt>Waktu</dt><dd id="mTime">—</dd></div>
+          </dl>
+          <div class="controls">
+            <button class="btn" id="mineBtn" type="button">Mulai menambang</button>
+            <span class="note" id="mineNote">Tiap nol hex tambahan = 16× lebih sulit.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GENESIS -->
+  <section class="section" id="genesis" style="border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 05 · Blok #0</span>
+        <h2>Verifikasi <em>blok genesis</em></h2>
+        <p>Header blok hanya 80 byte. Hash dua kali, balik urutan byte-nya, dan kamu akan mendapat hash yang sama persis dengan yang dihitung Satoshi pada 3 Januari 2009.</p>
+      </div>
+
+      <div class="genesis">
+        <div class="panel reveal">
+          <blockquote class="coinbase">"The Times 03/Jan/2009 Chancellor on brink of second bailout for banks"</blockquote>
+          <table class="header-table">
+            <tr><th>Versi</th><td>1</td></tr>
+            <tr><th>Blok sebelumnya</th><td>0000…0000</td></tr>
+            <tr><th>Merkle root</th><td>4a5e1e4b…a33b</td></tr>
+            <tr><th>Waktu</th><td>1231006505 <span style="color:var(--faint)">· 18:15:05 UTC</span></td></tr>
+            <tr><th>Bits (target)</th><td>1d00ffff</td></tr>
+            <tr><th>Nonce</th><td>2083236893</td></tr>
+          </table>
+        </div>
+
+        <div class="panel reveal">
+          <div class="panel-head"><h3>Header mentah · 80 byte</h3><span>little-endian</span></div>
+          <div class="hexdump" id="hexdump"></div>
+          <div class="legend">
+            <span style="--c:#b9a6ff">versi</span>
+            <span style="--c:#5d5d6b">prev hash</span>
+            <span style="--c:#7cc7ff">merkle root</span>
+            <span style="--c:#3ddc97">waktu</span>
+            <span style="--c:#ff8fa3">bits</span>
+            <span style="--c:#f7931a">nonce</span>
+          </div>
+          <div class="controls">
+            <button class="btn" id="verifyBtn" type="button">Hitung SHA256²</button>
+          </div>
+          <div class="verify-result" id="verifyOut" aria-live="polite">Tekan tombol untuk menghitung hash di browser kamu.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HALVING -->
+  <section class="section" id="halving" style="border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 06 · Kebijakan moneter</span>
+        <h2>Kelangkaan yang <em>terprogram</em></h2>
+        <p>Setiap 210.000 blok (sekitar empat tahun), imbalan penambang dipotong setengah. Hasilnya deret geometri yang berhenti tepat di bawah 21 juta BTC.</p>
+      </div>
+
+      <div class="chart-card reveal">
+        <div class="chart-legend">
+          <span style="--c:var(--accent)"><i></i>Imbalan per blok (BTC)</span>
+          <span style="--c:#ededf0"><i></i>Total pasokan (juta BTC)</span>
+        </div>
+        <div id="halvingChart"></div>
+        <div class="chart-tip" id="chartTip">Arahkan kursor atau ketuk batang untuk detail.</div>
+      </div>
+
+      <dl class="epochs reveal" id="epochs"></dl>
+    </div>
+  </section>
+
+  <!-- REFERENCES -->
+  <section class="section" id="referensi" style="border-top:1px solid var(--line)">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Bab 07 · Sumber</span>
+        <h2>Referensi <em>terbuka</em></h2>
+        <p>Halaman ini disusun dari kode sumber, spesifikasi dan dokumen primer yang bisa kamu baca sendiri.</p>
+      </div>
+
+      <div class="refs">
+        <div class="reveal">
+          <h3>GitHub · open source</h3>
+          <ul class="ref-list">
+            <li><a href="https://github.com/bitcoin/bitcoin" target="_blank" rel="noopener"><strong>bitcoin/bitcoin</strong><b class="arrow">↗</b><span>Bitcoin Core, implementasi referensi sejak 2009</span></a></li>
+            <li><a href="https://github.com/bitcoin/bips" target="_blank" rel="noopener"><strong>bitcoin/bips</strong><b class="arrow">↗</b><span>Bitcoin Improvement Proposals: SegWit, Taproot, BIP 32/39</span></a></li>
+            <li><a href="https://github.com/bitcoin-core/secp256k1" target="_blank" rel="noopener"><strong>bitcoin-core/secp256k1</strong><b class="arrow">↗</b><span>Pustaka C teroptimasi untuk ECDSA &amp; Schnorr</span></a></li>
+            <li><a href="https://github.com/bitcoinbook/bitcoinbook" target="_blank" rel="noopener"><strong>bitcoinbook/bitcoinbook</strong><b class="arrow">↗</b><span>Mastering Bitcoin, Andreas M. Antonopoulos &amp; David A. Harding</span></a></li>
+            <li><a href="https://github.com/lightning/bolts" target="_blank" rel="noopener"><strong>lightning/bolts</strong><b class="arrow">↗</b><span>Spesifikasi Lightning Network</span></a></li>
+            <li><a href="https://github.com/mempool/mempool" target="_blank" rel="noopener"><strong>mempool/mempool</strong><b class="arrow">↗</b><span>Explorer &amp; visualisasi blok open source</span></a></li>
+          </ul>
+        </div>
+        <div class="reveal">
+          <h3>Dokumen &amp; spesifikasi</h3>
+          <ul class="ref-list">
+            <li><a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener"><strong>Bitcoin Whitepaper</strong><b class="arrow">↗</b><span>Satoshi Nakamoto, 31 Oktober 2008</span></a></li>
+            <li><a href="https://nakamotoinstitute.org/" target="_blank" rel="noopener"><strong>Satoshi Nakamoto Institute</strong><b class="arrow">↗</b><span>Arsip email, postingan forum, dan literatur cypherpunk</span></a></li>
+            <li><a href="https://developer.bitcoin.org/" target="_blank" rel="noopener"><strong>Bitcoin Developer Docs</strong><b class="arrow">↗</b><span>Referensi protokol, format blok &amp; transaksi</span></a></li>
+            <li><a href="https://learnmeabitcoin.com/" target="_blank" rel="noopener"><strong>Learn Me A Bitcoin</strong><b class="arrow">↗</b><span>Penjelasan teknis visual, termasuk blok genesis</span></a></li>
+            <li><a href="https://csrc.nist.gov/pubs/fips/180-4/upd1/final" target="_blank" rel="noopener"><strong>NIST FIPS 180-4</strong><b class="arrow">↗</b><span>Secure Hash Standard (SHA-256)</span></a></li>
+            <li><a href="https://www.secg.org/sec2-v2.pdf" target="_blank" rel="noopener"><strong>SEC 2: Recommended Elliptic Curve Domain Parameters</strong><b class="arrow">↗</b><span>Parameter resmi kurva secp256k1</span></a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Dibuat untuk edukasi. Bukan saran keuangan.</span>
+    <span class="mono">000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f</span>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ================= SHA-256 (pure JS, FIPS 180-4) ================= */
+  const K = new Uint32Array(64), H0 = new Uint32Array(8);
+  (() => {
+    const frac = (x) => ((x - Math.floor(x)) * 0x100000000) >>> 0;
+    let n = 0, p = 2;
+    while (n < 64) {
+      let prime = true;
+      for (let d = 2; d * d <= p; d++) if (p % d === 0) { prime = false; break; }
+      if (prime) { if (n < 8) H0[n] = frac(Math.sqrt(p)); K[n++] = frac(Math.cbrt(p)); }
+      p++;
+    }
+  })();
+  const W = new Uint32Array(64);
+
+  function sha256(bytes) {
+    const len = bytes.length, bitLen = len * 8;
+    const total = ((len + 9 + 63) >> 6) << 6;
+    const m = new Uint8Array(total);
+    m.set(bytes); m[len] = 0x80;
+    const dv = new DataView(m.buffer);
+    dv.setUint32(total - 8, Math.floor(bitLen / 0x100000000));
+    dv.setUint32(total - 4, bitLen >>> 0);
+    const h = H0.slice();
+    for (let off = 0; off < total; off += 64) {
+      for (let i = 0; i < 16; i++) W[i] = dv.getUint32(off + i * 4);
+      for (let i = 16; i < 64; i++) {
+        const a = W[i - 15], b = W[i - 2];
+        const s0 = ((a >>> 7) | (a << 25)) ^ ((a >>> 18) | (a << 14)) ^ (a >>> 3);
+        const s1 = ((b >>> 17) | (b << 15)) ^ ((b >>> 19) | (b << 13)) ^ (b >>> 10);
+        W[i] = (W[i - 16] + s0 + W[i - 7] + s1) | 0;
+      }
+      let a = h[0], b = h[1], c = h[2], d = h[3], e = h[4], f = h[5], g = h[6], k = h[7];
+      for (let i = 0; i < 64; i++) {
+        const S1 = ((e >>> 6) | (e << 26)) ^ ((e >>> 11) | (e << 21)) ^ ((e >>> 25) | (e << 7));
+        const t1 = (k + S1 + ((e & f) ^ (~e & g)) + K[i] + W[i]) | 0;
+        const S0 = ((a >>> 2) | (a << 30)) ^ ((a >>> 13) | (a << 19)) ^ ((a >>> 22) | (a << 10));
+        const t2 = (S0 + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+        k = g; g = f; f = e; e = (d + t1) | 0; d = c; c = b; b = a; a = (t1 + t2) | 0;
+      }
+      h[0] += a; h[1] += b; h[2] += c; h[3] += d; h[4] += e; h[5] += f; h[6] += g; h[7] += k;
+    }
+    const out = new Uint8Array(32), ov = new DataView(out.buffer);
+    for (let i = 0; i < 8; i++) ov.setUint32(i * 4, h[i]);
+    return out;
+  }
+  const enc = new TextEncoder();
+  const toHex = (b) => Array.from(b, (x) => x.toString(16).padStart(2, "0")).join("");
+  const fromHex = (s) => new Uint8Array(s.match(/../g).map((x) => parseInt(x, 16)));
+  const sha256hex = (str) => toHex(sha256(enc.encode(str)));
+  window.sha256hex = sha256hex; // handy for the curious, from DevTools
+
+  /* ================= Nav, progress, reveal ================= */
+  const nav = $("#nav"), progress = $("#progress");
+  const menuBtn = $("#menuBtn"), navLinks = $("#navLinks");
+  menuBtn.addEventListener("click", () => {
+    const open = navLinks.classList.toggle("open");
+    menuBtn.setAttribute("aria-expanded", open);
+    menuBtn.textContent = open ? "Tutup" : "Menu";
+  });
+  $$("a", navLinks).forEach((a) => a.addEventListener("click", () => {
+    navLinks.classList.remove("open"); menuBtn.setAttribute("aria-expanded", "false"); menuBtn.textContent = "Menu";
+  }));
+
+  const timeline = $("#timeline"), tlFill = $("#tlFill");
+  function onScroll() {
+    const y = window.scrollY, max = document.documentElement.scrollHeight - innerHeight;
+    progress.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+    nav.classList.toggle("scrolled", y > 24);
+    const r = timeline.getBoundingClientRect();
+    const t = Math.min(1, Math.max(0, (innerHeight * 0.6 - r.top) / r.height));
+    tlFill.style.transform = `scaleY(${t})`;
+  }
+  let ticking = false;
+  addEventListener("scroll", () => {
+    if (!ticking) { requestAnimationFrame(() => { onScroll(); ticking = false; }); ticking = true; }
+  }, { passive: true });
+  addEventListener("resize", onScroll);
+  onScroll();
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+  }, { rootMargin: "0px 0px -12% 0px", threshold: 0.08 });
+  $$(".reveal").forEach((el) => io.observe(el));
+
+  const sections = $$("main section[id]");
+  const linkFor = Object.fromEntries($$("a", navLinks).map((a) => [a.getAttribute("href").slice(1), a]));
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach((e) => {
+      if (e.isIntersecting && linkFor[e.target.id]) {
+        Object.values(linkFor).forEach((a) => a.classList.remove("active"));
+        linkFor[e.target.id].classList.add("active");
+      }
+    });
+  }, { rootMargin: "-45% 0px -50% 0px" });
+  sections.forEach((s) => spy.observe(s));
+
+  // spotlight that follows the pointer on cards
+  $$(".card").forEach((c) => c.addEventListener("pointermove", (e) => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty("--mx", `${e.clientX - r.left}px`);
+    c.style.setProperty("--my", `${e.clientY - r.top}px`);
+  }));
+
+  /* ================= Time since genesis ================= */
+  const GENESIS = Date.UTC(2009, 0, 3, 18, 15, 5);
+  const since = $("#since");
+  function tickSince() {
+    const s = Math.floor((Date.now() - GENESIS) / 1000);
+    const d = Math.floor(s / 86400);
+    const hh = String(Math.floor((s % 86400) / 3600)).padStart(2, "0");
+    const mm = String(Math.floor((s % 3600) / 60)).padStart(2, "0");
+    const ss = String(s % 60).padStart(2, "0");
+    since.textContent = `${d.toLocaleString("id-ID")}h ${hh}:${mm}:${ss}`;
+  }
+  tickSince(); setInterval(tickSince, 1000);
+
+  /* ================= Hash rain (hero canvas) ================= */
+  (() => {
+    const cv = $("#rain"), ctx = cv.getContext("2d");
+    const HEX = "0123456789abcdef";
+    let w, h, cols, drops, size, dpr, running = true;
+    function resize() {
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      w = cv.clientWidth; h = cv.clientHeight;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      size = w < 600 ? 13 : 15;
+      cols = Math.ceil(w / (size * 1.3));
+      drops = Array.from({ length: cols }, () => ({ y: Math.random() * -h, v: 0.4 + Math.random() * 1.1, hot: Math.random() < 0.06 }));
+      ctx.fillStyle = "#07070a"; ctx.fillRect(0, 0, w, h);
+    }
+    function frame() {
+      if (!running) return;
+      ctx.fillStyle = "rgba(7,7,10,0.09)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.font = `${size}px "JetBrains Mono", monospace`;
+      for (let i = 0; i < cols; i++) {
+        const d = drops[i];
+        const ch = HEX[(Math.random() * 16) | 0];
+        ctx.fillStyle = d.hot ? "rgba(247,147,26,0.85)" : "rgba(237,237,240,0.16)";
+        ctx.fillText(ch, i * size * 1.3, d.y);
+        d.y += size * d.v * 0.5;
+        if (d.y > h + 40) { d.y = Math.random() * -200; d.v = 0.4 + Math.random() * 1.1; d.hot = Math.random() < 0.06; }
+      }
+      requestAnimationFrame(frame);
+    }
+    resize();
+    addEventListener("resize", resize);
+    if (reduceMotion) {
+      // static frame of hex, no animation
+      ctx.font = `${size}px "JetBrains Mono", monospace`;
+      for (let i = 0; i < cols; i++) for (let y = 0; y < h; y += size * 1.6) {
+        ctx.fillStyle = Math.random() < 0.02 ? "rgba(247,147,26,0.6)" : "rgba(237,237,240,0.06)";
+        ctx.fillText(HEX[(Math.random() * 16) | 0], i * size * 1.3, y);
+      }
+      return;
+    }
+    new IntersectionObserver(([e]) => {
+      const was = running; running = e.isIntersecting;
+      if (running && !was) requestAnimationFrame(frame);
+    }).observe(cv);
+    requestAnimationFrame(frame);
+  })();
+
+  /* ================= Elliptic curve plot ================= */
+  (() => {
+    const box = $("#curve");
+    const W0 = 400, H0v = 250, sx = 68, sy = 20, cx = 170, cy = 125;
+    const X = (x) => cx + x * sx, Y = (y) => cy - y * sy;
+    const f = (x) => Math.sqrt(Math.max(0, x ** 3 + 7));
+    const x0 = -Math.cbrt(7), xMax = Math.cbrt(5.6 ** 2 - 7);
+    // One continuous stroke: lower branch right→left, through (x0, 0), upper branch left→right.
+    const xs = Array.from({ length: 121 }, (_, i) => x0 + (i / 120) ** 2 * (xMax - x0));
+    const path = [...xs].reverse().map((x, i) => `${i ? "L" : "M"}${X(x).toFixed(1)} ${Y(-f(x)).toFixed(1)}`).join("")
+      + xs.map((x) => `L${X(x).toFixed(1)} ${Y(f(x)).toFixed(1)}`).join("");
+    // Chord through P and Q meets the curve at a third point; reflect it over the x-axis to get P+Q.
+    const P = [-1.8, f(-1.8)], Q = [0.5, f(0.5)];
+    const m = (Q[1] - P[1]) / (Q[0] - P[0]);
+    const rx = m * m - P[0] - Q[0], ry = m * (P[0] - rx) - P[1];
+    const R3 = [rx, ry];
+    const line = (x) => P[1] + m * (x - P[0]);
+    box.innerHTML = `
+      <svg viewBox="0 0 ${W0} ${H0v}" role="img" aria-hidden="true">
+        <defs><linearGradient id="cg" x1="0" x2="1"><stop offset="0" stop-color="#f7931a" stop-opacity=".25"/><stop offset=".5" stop-color="#f7931a"/><stop offset="1" stop-color="#f7931a" stop-opacity=".25"/></linearGradient></defs>
+        <g stroke="rgba(255,255,255,0.07)">
+          ${Array.from({ length: 9 }, (_, i) => `<line x1="${i * 50}" y1="0" x2="${i * 50}" y2="${H0v}"/>`).join("")}
+          ${Array.from({ length: 6 }, (_, i) => `<line x1="0" y1="${i * 50}" x2="${W0}" y2="${i * 50}"/>`).join("")}
+        </g>
+        <line x1="0" y1="${cy}" x2="${W0}" y2="${cy}" stroke="rgba(255,255,255,0.2)"/>
+        <line x1="${cx}" y1="0" x2="${cx}" y2="${H0v}" stroke="rgba(255,255,255,0.2)"/>
+        <path d="${path}" fill="none" stroke="url(#cg)" stroke-width="2" class="curve-path"/>
+        <line x1="${X(P[0] - 0.3)}" y1="${Y(line(P[0] - 0.3))}" x2="${X(rx + 0.3)}" y2="${Y(line(rx + 0.3))}" stroke="rgba(237,237,240,0.35)" stroke-dasharray="4 4"/>
+        <circle cx="${X(rx)}" cy="${Y(-ry)}" r="3" fill="none" stroke="rgba(237,237,240,0.5)"/>
+        <line x1="${X(rx)}" y1="${Y(-ry)}" x2="${X(rx)}" y2="${Y(ry)}" stroke="rgba(237,237,240,0.25)" stroke-dasharray="2 4"/>
+        <g font-family="JetBrains Mono, monospace" font-size="11">
+          <circle cx="${X(P[0])}" cy="${Y(P[1])}" r="4.5" fill="#ededf0"/><text x="${X(P[0]) - 16}" y="${Y(P[1]) - 9}" fill="#ededf0">P</text>
+          <circle cx="${X(Q[0])}" cy="${Y(Q[1])}" r="4.5" fill="#ededf0"/><text x="${X(Q[0]) - 18}" y="${Y(Q[1]) - 8}" fill="#ededf0">Q</text>
+          <circle cx="${X(R3[0])}" cy="${Y(R3[1])}" r="5" fill="#f7931a"/><text x="${X(R3[0]) + 10}" y="${Y(R3[1]) + 4}" fill="#f7931a">P+Q</text>
+          <text x="12" y="20" fill="#9a9aa8">y² = x³ + 7</text>
+        </g>
+      </svg>`;
+    const cp = box.querySelector(".curve-path");
+    if (!reduceMotion && cp.getTotalLength) {
+      const L = cp.getTotalLength();
+      cp.style.strokeDasharray = L; cp.style.strokeDashoffset = L;
+      new IntersectionObserver(([e], o) => {
+        if (e.isIntersecting) { cp.style.transition = "stroke-dashoffset 2.4s cubic-bezier(.22,1,.36,1)"; cp.style.strokeDashoffset = 0; o.disconnect(); }
+      }, { threshold: 0.4 }).observe(box);
+    }
+  })();
+
+  /* ================= Avalanche demo ================= */
+  (() => {
+    const inp = $("#shaIn"), out = $("#shaOut"), bar = $("#diffBar"), pct = $("#diffPct"), lbl = $("#diffLabel");
+    let prev = null;
+    out.innerHTML = Array.from({ length: 64 }, () => '<span class="c">0</span>').join("");
+    const cells = $$(".c", out);
+    function bitsDiff(a, b) {
+      let n = 0;
+      for (let i = 0; i < 64; i++) { let x = parseInt(a[i], 16) ^ parseInt(b[i], 16); while (x) { n += x & 1; x >>= 1; } }
+      return n;
+    }
+    function update() {
+      const h = sha256hex(inp.value);
+      cells.forEach((c, i) => {
+        if (prev && prev[i] !== h[i]) {
+          c.classList.add("flip");
+          requestAnimationFrame(() => requestAnimationFrame(() => c.classList.remove("flip")));
+        }
+        c.textContent = h[i];
+      });
+      if (prev && prev !== h) {
+        const bits = bitsDiff(prev, h);
+        const p = Math.round((bits / 256) * 100);
+        bar.style.width = p + "%"; pct.textContent = p + "%";
+        lbl.textContent = `${bits}/256 bit berubah`;
+      }
+      prev = h;
+    }
+    inp.addEventListener("input", update);
+    update();
+  })();
+
+  /* ================= Mini miner ================= */
+  (() => {
+    const inp = $("#mineIn"), out = $("#mineOut"), btn = $("#mineBtn"), note = $("#mineNote");
+    const nonceEl = $("#mNonce"), rateEl = $("#mRate"), timeEl = $("#mTime");
+    let difficulty = 4, mining = false;
+    $$("#diffChips button").forEach((b) => b.addEventListener("click", () => {
+      $$("#diffChips button").forEach((x) => x.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      difficulty = +b.dataset.d;
+      note.textContent = `Rata-rata ${(16 ** difficulty).toLocaleString("id-ID")} percobaan.`;
+    }));
+    const paint = (h, d) => `<span class="z">${h.slice(0, d)}</span>${h.slice(d)}`;
+    const fmt = (n) => n >= 1e6 ? (n / 1e6).toFixed(2) + " M" : n >= 1e3 ? (n / 1e3).toFixed(1) + " k" : String(Math.round(n));
+
+    function stop(msg) { mining = false; btn.textContent = "Mulai menambang"; if (msg) note.textContent = msg; }
+    btn.addEventListener("click", () => {
+      if (mining) return stop("Dihentikan.");
+      mining = true; btn.textContent = "Berhenti";
+      const data = inp.value, d = difficulty, prefix = "0".repeat(d);
+      const base = enc.encode(data);
+      let nonce = 0;
+      const t0 = performance.now();
+      note.textContent = "Mencari nonce…";
+      function chunk() {
+        if (!mining) return;
+        const tEnd = performance.now() + 24;
+        let hex = "";
+        while (performance.now() < tEnd) {
+          for (let j = 0; j < 200; j++) {
+            const ns = enc.encode(String(nonce));
+            const buf = new Uint8Array(base.length + ns.length);
+            buf.set(base); buf.set(ns, base.length);
+            hex = toHex(sha256(buf));
+            if (hex.startsWith(prefix)) {
+              const dt = (performance.now() - t0) / 1000;
+              out.innerHTML = paint(hex, d);
+              nonceEl.textContent = nonce.toLocaleString("id-ID");
+              rateEl.textContent = fmt((nonce + 1) / Math.max(dt, 0.001));
+              timeEl.textContent = dt.toFixed(2) + " s";
+              return stop(`Blok ditemukan setelah ${(nonce + 1).toLocaleString("id-ID")} percobaan.`);
+            }
+            nonce++;
+          }
+        }
+        const dt = (performance.now() - t0) / 1000;
+        out.innerHTML = paint(hex, 0);
+        nonceEl.textContent = nonce.toLocaleString("id-ID");
+        rateEl.textContent = fmt(nonce / Math.max(dt, 0.001));
+        timeEl.textContent = dt.toFixed(1) + " s";
+        setTimeout(chunk, 0);
+      }
+      chunk();
+    });
+  })();
+
+  /* ================= Genesis verification ================= */
+  (() => {
+    const fields = [
+      ["v", "01000000"],
+      ["p", "0".repeat(64)],
+      ["m", "3ba3edfd7a7b12b27ac72c3e67768f617fc81bc3888a51323a9fb8aa4b1e5e4a"],
+      ["t", "29ab5f49"],
+      ["b", "ffff001d"],
+      ["n", "1dac2b7c"],
+    ];
+    $("#hexdump").innerHTML = fields.map(([k, hex]) => `<span class="f ${k}">${hex}</span>`).join("");
+    const header = fields.map((f) => f[1]).join("");
+    const EXPECT = "000000000019d6689c085ae165831e934ff763ae46a2a6c172b3f1b60a8ce26f";
+    const outEl = $("#verifyOut");
+    $("#verifyBtn").addEventListener("click", () => {
+      const once = sha256(fromHex(header));
+      const twice = sha256(once);
+      const shown = toHex(twice.slice().reverse());
+      const ok = shown === EXPECT;
+      outEl.classList.toggle("ok", ok);
+      outEl.innerHTML = "";
+      // type the hash out for a bit of drama
+      let i = 0;
+      const step = () => {
+        i = Math.min(64, i + (reduceMotion ? 64 : 2));
+        outEl.innerHTML = `<span style="color:var(--faint)">SHA256(SHA256(header)), dibalik:</span><br>${shown.slice(0, i)}`;
+        if (i < 64) requestAnimationFrame(step);
+        else outEl.innerHTML += ok
+          ? `<br><span class="okmark">✓ Cocok dengan hash blok genesis. Perhatikan 10 nol di depan: itulah bukti kerja.</span>`
+          : `<br>✗ Tidak cocok.`;
+      };
+      step();
+    });
+  })();
+
+  /* ================= Halving chart ================= */
+  (() => {
+    const epochs = [];
+    let supply = 0;
+    for (let i = 0; i < 8; i++) {
+      const reward = 50 / 2 ** i;
+      supply += reward * 210000;
+      epochs.push({ i, year: [2009, 2012, 2016, 2020, 2024, 2028, 2032, 2036][i], reward, supply: supply / 1e6, block: i * 210000, future: i >= 5 });
+    }
+    const Wd = 760, Ht = 340, pl = 44, pr = 48, pt = 20, pb = 40;
+    const iw = Wd - pl - pr, ih = Ht - pt - pb;
+    const bw = iw / epochs.length;
+    const yR = (r) => pt + ih - (r / 50) * ih;
+    const yS = (s) => pt + ih - (s / 21) * ih;
+    const line = epochs.map((e, k) => `${k ? "L" : "M"}${(pl + bw * k + bw / 2).toFixed(1)} ${yS(e.supply).toFixed(1)}`).join("");
+    const svg = `
+      <svg viewBox="0 0 ${Wd} ${Ht}" role="img" aria-label="Grafik imbalan blok dan total pasokan per epoch halving">
+        <g stroke="rgba(255,255,255,0.07)">
+          ${[0, 0.25, 0.5, 0.75, 1].map((f) => `<line x1="${pl}" x2="${Wd - pr}" y1="${pt + ih * (1 - f)}" y2="${pt + ih * (1 - f)}"/>`).join("")}
+        </g>
+        <g font-size="10" fill="#5d5d6b">
+          ${[0, 12.5, 25, 37.5, 50].map((v) => `<text x="${pl - 8}" y="${yR(v) + 3}" text-anchor="end">${v}</text>`).join("")}
+          ${[0, 5.25, 10.5, 15.75, 21].map((v) => `<text x="${Wd - pr + 8}" y="${yS(v) + 3}">${v}M</text>`).join("")}
+        </g>
+        ${epochs.map((e, k) => {
+          const x = pl + bw * k + bw * 0.18, w = bw * 0.64, y = yR(e.reward);
+          return `<g class="bar" data-k="${k}" tabindex="0" style="cursor:pointer;outline:none">
+            <rect x="${pl + bw * k}" y="${pt}" width="${bw}" height="${ih}" fill="transparent"/>
+            <rect class="b" x="${x}" y="${y}" width="${w}" height="${Math.max(1, pt + ih - y)}" rx="3"
+              fill="${e.future ? "rgba(247,147,26,0.22)" : "#f7931a"}" stroke="${e.future ? "rgba(247,147,26,0.6)" : "none"}" stroke-dasharray="${e.future ? "3 3" : ""}"/>
+            <text x="${pl + bw * k + bw / 2}" y="${Ht - 16}" text-anchor="middle" font-size="11" fill="${e.future ? "#5d5d6b" : "#9a9aa8"}">${e.year}</text>
+          </g>`;
+        }).join("")}
+        <path d="${line}" fill="none" stroke="#ededf0" stroke-width="1.5" class="sline"/>
+        ${epochs.map((e, k) => `<circle cx="${pl + bw * k + bw / 2}" cy="${yS(e.supply)}" r="3.5" fill="#07070a" stroke="#ededf0" stroke-width="1.5"/>`).join("")}
+      </svg>`;
+    $("#halvingChart").innerHTML = svg;
+    const tip = $("#chartTip");
+    const nf = (n, d = 3) => n.toLocaleString("id-ID", { maximumFractionDigits: d });
+    $$("#halvingChart .bar").forEach((g) => {
+      const e = epochs[+g.dataset.k];
+      const show = () => {
+        $$("#halvingChart .bar .b").forEach((b) => b.style.opacity = "0.35");
+        g.querySelector(".b").style.opacity = "1";
+        tip.innerHTML = `<b>${e.year}${e.future ? " (perkiraan)" : ""}</b> · blok ${nf(e.block)} · imbalan <b>${nf(e.reward, 5)} BTC</b> · pasokan di akhir epoch <b>${nf(e.supply, 2)} juta</b>`;
+      };
+      const hide = () => $$("#halvingChart .bar .b").forEach((b) => b.style.opacity = "1");
+      g.addEventListener("pointerenter", show);
+      g.addEventListener("focus", show);
+      g.addEventListener("click", show);
+      g.addEventListener("pointerleave", hide);
+      g.addEventListener("blur", hide);
+    });
+    $("#epochs").innerHTML = epochs.slice(0, 6).map((e) => `
+      <div><dt>${e.year}${e.future ? " · perkiraan" : ""}</dt><dd>${nf(e.reward, 5)} BTC</dd><small>blok ${nf(e.block)}</small></div>`).join("");
+  })();
+})();
+</script>
+</body>
+</html>
