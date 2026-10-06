@@ -1,32 +1,21 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useState } from "react";
-import { content, LANGS } from "@/lib/content";
+import { createContext, useCallback, useContext, useState } from "react";
+import { content } from "@/lib/content";
 
-const STORAGE_KEY = "lang";
 const LanguageContext = createContext(null);
 
-export function LanguageProvider({ children }) {
-  const [lang, setLangState] = useState("en");
+export function LanguageProvider({ initialLang, children }) {
+  const [lang, setLangState] = useState(initialLang);
 
-  useEffect(() => {
-    let saved = null;
-    try {
-      saved = localStorage.getItem(STORAGE_KEY);
-    } catch {}
-    if (LANGS.includes(saved)) setLangState(saved);
-    else if (navigator.language?.toLowerCase().startsWith("id")) setLangState("id");
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.lang = lang;
-  }, [lang]);
-
+  // Swap copy in place (no navigation, so scroll position and demo state survive),
+  // then sync the URL, <html lang>, title and the cookie the proxy reads for "/".
   const setLang = useCallback((next) => {
     setLangState(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, next);
-    } catch {}
+    document.documentElement.lang = next;
+    document.title = content[next].meta.title;
+    document.cookie = `lang=${next}; path=/; max-age=31536000; samesite=lax`;
+    window.history.replaceState(null, "", `/${next}${window.location.hash}`);
   }, []);
 
   return (

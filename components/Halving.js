@@ -62,7 +62,7 @@ export default function Halving() {
                     tabIndex={0}
                     style={{ cursor: "pointer", outline: "none" }}
                     onPointerEnter={() => setHover(k)}
-                    onPointerLeave={() => setHover(null)}
+                    onPointerLeave={(ev) => ev.pointerType !== "touch" && setHover(null)}
                     onFocus={() => setHover(k)}
                     onBlur={() => setHover(null)}
                     onClick={() => setHover(k)}

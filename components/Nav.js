@@ -35,6 +35,13 @@ export default function Nav() {
   }, []);
 
   useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  useEffect(() => {
     const spy = new IntersectionObserver(
       (entries) => entries.forEach((e) => e.isIntersecting && setActive(e.target.id)),
       { rootMargin: "-45% 0px -50% 0px" }
@@ -45,6 +52,7 @@ export default function Nav() {
 
   return (
     <>
+      <a className="skip" href="#top">{t.skip}</a>
       <div className="progress" ref={progress} aria-hidden="true" />
       <header className={`nav${scrolled ? " scrolled" : ""}`}>
         <div className="wrap">

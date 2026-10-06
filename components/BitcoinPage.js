@@ -36,7 +36,7 @@ export default function BitcoinPage() {
   return (
     <>
       <Nav />
-      <main id="top">
+      <main id="top" tabIndex={-1}>
         <Hero />
         <Prologue />
         <Chapter />

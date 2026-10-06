@@ -60,9 +60,12 @@ function useHashRain(ref) {
       raf = requestAnimationFrame(frame);
     };
 
+    const onResize = () => {
+      if (cv.clientWidth !== w) resize();
+    };
     resize();
-    window.addEventListener("resize", resize);
-    if (reduce) return () => window.removeEventListener("resize", resize);
+    window.addEventListener("resize", onResize);
+    if (reduce) return () => window.removeEventListener("resize", onResize);
 
     // Pause the animation while the hero is off screen.
     const io = new IntersectionObserver(([e]) => {
@@ -76,7 +79,7 @@ function useHashRain(ref) {
       running = false;
       cancelAnimationFrame(raf);
       io.disconnect();
-      window.removeEventListener("resize", resize);
+      window.removeEventListener("resize", onResize);
     };
   }, [ref]);
 }
