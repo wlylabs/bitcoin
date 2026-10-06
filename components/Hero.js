@@ -101,11 +101,12 @@ export default function Hero() {
   useHashRain(canvas);
   const s = useSinceGenesis();
 
-  let since = "—";
+  let days = "—";
+  let clock = null;
   if (s !== null) {
     const pad = (n) => String(n).padStart(2, "0");
-    const days = Math.floor(s / 86400).toLocaleString(t.locale);
-    since = `${days}${t.hero.daySuffix} ${pad(Math.floor((s % 86400) / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
+    days = `${Math.floor(s / 86400).toLocaleString(t.locale)} ${t.hero.days}`;
+    clock = `${pad(Math.floor((s % 86400) / 3600))}:${pad(Math.floor((s % 3600) / 60))}:${pad(s % 60)}`;
   }
 
   return (
@@ -121,7 +122,10 @@ export default function Hero() {
         <dl className="hero-stats">
           <div>
             <dt>{t.hero.since}</dt>
-            <dd>{since}</dd>
+            <dd>
+              {days}
+              {clock && <span className="tick">{clock}</span>}
+            </dd>
           </div>
           <div>
             <dt>{t.hero.supply}</dt>
