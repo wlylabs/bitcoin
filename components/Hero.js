@@ -56,7 +56,7 @@ export default function Hero() {
           </div>
         </dl>
       </div>
-      <a className="scroll-cue" href="#chapters" aria-label={t.hero.scrollAria}>
+      <a className="scroll-cue" href="#live" aria-label={t.hero.scrollAria}>
         {t.hero.scroll}
         <i />
       </a>
