@@ -138,7 +138,7 @@ export default function Cryptography() {
   return (
     <section className="section section-tint" id="cryptography">
       <div className="wrap">
-        <SectionHead eyebrow={c.eyebrow} title={c.title} lede={c.lede} />
+        <SectionHead as="h1" eyebrow={c.eyebrow} title={c.title} lede={c.lede} />
         <div className="crypto-grid">
           <Card span="span-7" card={c.cards.hash} />
           <Card span="span-5" card={c.cards.pow} />

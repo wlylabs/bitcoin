@@ -196,7 +196,7 @@ export default function Lab() {
   return (
     <section className="section" id="lab">
       <div className="wrap">
-        <SectionHead eyebrow={t.lab.eyebrow} title={t.lab.title} lede={t.lab.lede} />
+        <SectionHead as="h1" eyebrow={t.lab.eyebrow} title={t.lab.title} lede={t.lab.lede} />
         <div className="lab">
           <Avalanche t={t} />
           <Miner t={t} />

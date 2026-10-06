@@ -56,7 +56,7 @@ export default function Genesis() {
                     <td>
                       {VALUES[i] ?? (
                         <>
-                          1231006505 <span style={{ color: "var(--faint)" }}>· 18:15:05 UTC</span>
+                          1231006505 <span className="when">· 18:15:05 UTC</span>
                         </>
                       )}
                     </td>
@@ -88,14 +88,8 @@ export default function Genesis() {
               {result ? (
                 <>
                   <span style={{ color: "var(--faint)" }}>{g.reversed}</span>
-                  <br />
-                  {result.hash.slice(0, result.shown)}
-                  {result.shown >= 64 && (
-                    <>
-                      <br />
-                      {result.ok ? <span className="okmark">{g.ok}</span> : g.fail}
-                    </>
-                  )}
+                  <span className="hash">{result.hash.slice(0, result.shown)}</span>
+                  {result.shown >= 64 && (result.ok ? <span className="okmark">{g.ok}</span> : g.fail)}
                 </>
               ) : (
                 g.idle

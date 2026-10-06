@@ -1,33 +1,51 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Rich from "./Rich";
 import SectionHead from "./SectionHead";
 
 const YEARS = [2009, 2012, 2016, 2020, 2024, 2028, 2032, 2036];
+// supplyStart: BTC in existence when the epoch begins (0 at genesis).
 const EPOCHS = (() => {
   let supply = 0;
   return YEARS.map((year, i) => {
     const reward = 50 / 2 ** i;
+    const epoch = { year, reward, supplyStart: supply / 1e6, block: i * 210000, future: i >= 5 };
     supply += reward * 210000;
-    return { year, reward, supply: supply / 1e6, block: i * 210000, future: i >= 5 };
+    return epoch;
   });
 })();
 
-const W = 760, H = 340, PL = 44, PR = 48, PT = 20, PB = 40;
-const IW = W - PL - PR, IH = H - PT - PB;
-const BW = IW / EPOCHS.length;
+// The SVG is drawn at the container's real pixel width, so text stays at its
+// CSS size on phones instead of being scaled down with the whole chart.
+const H = 300, PL = 40, PR = 48, PT = 16, PB = 36;
+const IH = H - PT - PB;
 const yR = (r) => PT + IH - (r / 50) * IH;
 const yS = (s) => PT + IH - (s / 21) * IH;
-const cx = (k) => PL + BW * k + BW / 2;
+
+function useWidth(ref, fallback) {
+  const [w, setW] = useState(fallback);
+  useEffect(() => {
+    const ro = new ResizeObserver(([e]) => setW(Math.round(e.contentRect.width)));
+    ro.observe(ref.current);
+    return () => ro.disconnect();
+  }, [ref]);
+  return w;
+}
 
 export default function Halving() {
   const { t } = useLanguage();
   const h = t.halving;
   const [hover, setHover] = useState(null);
+  const box = useRef(null);
+  const W = Math.max(240, useWidth(box, 760));
+  const IW = W - PL - PR;
+  const BW = IW / EPOCHS.length;
+  const cx = (k) => PL + BW * k + BW / 2;
+  const short = BW < 40; // "'09" instead of "2009" when columns get narrow
   const nf = (n, d = 3) => n.toLocaleString(t.locale, { maximumFractionDigits: d });
-  const line = EPOCHS.map((e, k) => `${k ? "L" : "M"}${cx(k).toFixed(1)} ${yS(e.supply).toFixed(1)}`).join("");
+  const line = EPOCHS.map((e, k) => `${k ? "L" : "M"}${cx(k).toFixed(1)} ${yS(e.supplyStart).toFixed(1)}`).join("");
 
   return (
     <section className="section section-ruled" id="halving">
@@ -38,14 +56,14 @@ export default function Halving() {
             <span style={{ "--c": "var(--accent)" }}><i />{h.reward}</span>
             <span style={{ "--c": "#ededf0" }}><i />{h.supply}</span>
           </div>
-          <div id="halvingChart">
+          <div id="halvingChart" ref={box}>
             <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={h.chartAria}>
               <g stroke="rgba(255,255,255,0.07)">
                 {[0, 0.25, 0.5, 0.75, 1].map((f) => (
                   <line key={f} x1={PL} x2={W - PR} y1={PT + IH * (1 - f)} y2={PT + IH * (1 - f)} />
                 ))}
               </g>
-              <g fontSize="10" fill="#5d5d6b" fontFamily="var(--mono)">
+              <g fontSize="11" fill="#5d5d6b" fontFamily="var(--mono)">
                 {[0, 12.5, 25, 37.5, 50].map((v) => (
                   <text key={`r${v}`} x={PL - 8} y={yR(v) + 3} textAnchor="end">{v}</text>
                 ))}
@@ -80,15 +98,15 @@ export default function Halving() {
                       opacity={dim ? 0.35 : 1}
                       style={{ transition: "opacity 0.2s" }}
                     />
-                    <text x={cx(k)} y={H - 16} textAnchor="middle" fontSize="11" fontFamily="var(--mono)" fill={e.future ? "#5d5d6b" : "#9a9aa8"}>
-                      {e.year}
+                    <text x={cx(k)} y={H - 14} textAnchor="middle" fontSize="11" fontFamily="var(--mono)" fill={e.future ? "#5d5d6b" : "#9a9aa8"}>
+                      {short ? `'${String(e.year).slice(2)}` : e.year}
                     </text>
                   </g>
                 );
               })}
               <path d={line} fill="none" stroke="#ededf0" strokeWidth="1.5" />
               {EPOCHS.map((e, k) => (
-                <circle key={e.year} cx={cx(k)} cy={yS(e.supply)} r="3.5" fill="#07070a" stroke="#ededf0" strokeWidth="1.5" />
+                <circle key={e.year} cx={cx(k)} cy={yS(e.supplyStart)} r="3.5" fill="#07070a" stroke="#ededf0" strokeWidth="1.5" />
               ))}
             </svg>
           </div>
