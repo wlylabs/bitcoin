@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 
 const LANGS = ["en", "id"];
 
-// Send "/" to /en or /id: a saved choice wins, then the browser's Accept-Language.
+// Pick a language for a URL without one: a saved choice wins, then the browser's Accept-Language.
 function pickLang(request) {
   const saved = request.cookies.get("lang")?.value;
   if (LANGS.includes(saved)) return saved;
@@ -14,12 +14,13 @@ function pickLang(request) {
   return "en";
 }
 
+// "/" and the language-less chapter paths (used by the PWA shortcuts) redirect to /{lang}/...
 export function proxy(request) {
   const url = request.nextUrl.clone();
-  url.pathname = `/${pickLang(request)}`;
+  url.pathname = `/${pickLang(request)}${url.pathname === "/" ? "" : url.pathname}`;
   return NextResponse.redirect(url);
 }
 
 export const config = {
-  matcher: ["/"],
+  matcher: ["/", "/history", "/cryptography", "/memecoins", "/lab"],
 };

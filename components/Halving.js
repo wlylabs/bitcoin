@@ -78,7 +78,7 @@ export default function Halving() {
                   <g
                     key={e.year}
                     tabIndex={0}
-                    style={{ cursor: "pointer", outline: "none" }}
+                    style={{ cursor: "pointer" }}
                     onPointerEnter={() => setHover(k)}
                     onPointerLeave={(ev) => ev.pointerType !== "touch" && setHover(null)}
                     onFocus={() => setHover(k)}
