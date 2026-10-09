@@ -180,7 +180,6 @@ export function SafetyChecklist() {
             </li>
           ))}
         </ul>
-        <p className="warning reveal">{c.warning}</p>
       </div>
     </section>
   );
