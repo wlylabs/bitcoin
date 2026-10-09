@@ -184,3 +184,54 @@ export function SafetyChecklist() {
     </section>
   );
 }
+
+// How memecoins ended up on Bitcoin: Ordinals, BRC-20 and Runes, and the debate over blockspace.
+export function BitcoinMemes() {
+  const { t } = useLanguage();
+  const b = t.memes.btc;
+  return (
+    <section className="section section-ruled" id="bitcoin-memes">
+      <div className="wrap">
+        <SectionHead eyebrow={b.eyebrow} title={b.title} lede={b.lede} />
+        <div className="btcm reveal">
+          {b.cards.map(([kicker, title, text]) => (
+            <article key={kicker}>
+              <span className="kicker">{kicker}</span>
+              <h3>{title}</h3>
+              <Rich as="p" html={text} />
+            </article>
+          ))}
+        </div>
+        <h3 className="btcm-debate-title reveal">{b.debate}</h3>
+        <div className="btcm-debate reveal">
+          {[b.pro, b.con].map(([side, text], i) => (
+            <div key={side} className={i ? "con" : "pro"}>
+              <b>{side}</b>
+              <p>{text}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+export function MemeOdds() {
+  const { t } = useLanguage();
+  const o = t.memes.odds;
+  return (
+    <section className="section section-ruled" id="odds">
+      <div className="wrap">
+        <SectionHead eyebrow={o.eyebrow} title={o.title} lede={o.lede} />
+        <dl className="odds reveal">
+          {o.stats.map(([big, text]) => (
+            <div key={big}>
+              <Rich as="dt" html={big} />
+              <dd>{text}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </section>
+  );
+}
