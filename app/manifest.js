@@ -6,7 +6,7 @@ export default function manifest() {
     name: "History of Bitcoin",
     short_name: "Bitcoin",
     description:
-      "The history of Bitcoin, the cryptography behind it, and how memecoins launch on DEXs. Interactive and bilingual (English / Indonesian).",
+      "Travel through Bitcoin's history in a time machine, play Satoshi's Wallet with real prices, and try the cryptography behind it. Interactive and bilingual (English / Indonesian).",
     start_url: "/",
     scope: "/",
     display: "standalone",
@@ -22,7 +22,8 @@ export default function manifest() {
       { src: "/icons/maskable-512.png", sizes: "512x512", type: "image/png", purpose: "maskable" },
     ],
     shortcuts: [
-      { name: "History", url: "/history", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
+      { name: "Time Machine", url: "/history", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
+      { name: "Satoshi's Wallet", url: "/play", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
       { name: "Cryptography", url: "/cryptography", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
       { name: "Memecoins", url: "/memecoins", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },
       { name: "Lab", url: "/lab", icons: [{ src: "/icons/icon-192.png", sizes: "192x192" }] },

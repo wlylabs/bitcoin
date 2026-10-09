@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { sha256, sha256hex, toHex, utf8 } from "@/lib/sha256";
+import { startMining } from "@/lib/mine";
+import { sha256hex } from "@/lib/sha256";
 import { useLanguage } from "./LanguageProvider";
 import SectionHead from "./SectionHead";
 
@@ -75,58 +76,33 @@ function Miner({ t }) {
   const [mining, setMining] = useState(false);
   const [stats, setStats] = useState({ hash: null, zeros: 0, nonce: 0, rate: null, time: null });
   const [note, setNote] = useState({ key: "idle" });
-  const running = useRef(false);
-  const timer = useRef(0);
+  const halt = useRef(null);
 
   const nf = (n) => n.toLocaleString(t.locale);
   const value = data ?? t.lab.defaultBlock;
 
-  useEffect(() => () => {
-    running.current = false;
-    clearTimeout(timer.current);
-  }, []);
+  useEffect(() => () => halt.current?.(), []);
 
   const stop = (next) => {
-    running.current = false;
-    clearTimeout(timer.current);
+    halt.current?.();
+    halt.current = null;
     setMining(false);
     if (next) setNote(next);
   };
 
   const start = () => {
     const d = difficulty;
-    const prefix = "0".repeat(d);
-    const base = utf8(value);
-    const t0 = performance.now();
-    let nonce = 0;
-    running.current = true;
     setMining(true);
     setNote({ key: "searching" });
-
-    const chunk = () => {
-      if (!running.current) return;
-      const tEnd = performance.now() + 24;
-      let hex = "";
-      while (performance.now() < tEnd) {
-        for (let j = 0; j < 200; j++) {
-          const ns = utf8(String(nonce));
-          const buf = new Uint8Array(base.length + ns.length);
-          buf.set(base);
-          buf.set(ns, base.length);
-          hex = toHex(sha256(buf));
-          if (hex.startsWith(prefix)) {
-            const dt = (performance.now() - t0) / 1000;
-            setStats({ hash: hex, zeros: d, nonce, rate: (nonce + 1) / Math.max(dt, 0.001), time: dt.toFixed(2) + " s" });
-            return stop({ key: "found", n: nonce + 1 });
-          }
-          nonce++;
-        }
-      }
-      const dt = (performance.now() - t0) / 1000;
-      setStats({ hash: hex, zeros: 0, nonce, rate: nonce / Math.max(dt, 0.001), time: dt.toFixed(1) + " s" });
-      timer.current = setTimeout(chunk, 0);
-    };
-    chunk();
+    halt.current = startMining({
+      data: value,
+      zeros: d,
+      onTick: ({ hash, nonce, secs, rate }) => setStats({ hash, zeros: 0, nonce, rate, time: secs.toFixed(1) + " s" }),
+      onFound: ({ hash, nonce, tries, secs, rate }) => {
+        setStats({ hash, zeros: d, nonce, rate, time: secs.toFixed(2) + " s" });
+        stop({ key: "found", n: tries });
+      },
+    });
   };
 
   return (

@@ -8,7 +8,7 @@ import SectionHead from "./SectionHead";
 
 // `source` names a timeline in lib/content.js; `keyMoments` lists the item indexes
 // shown before the reader expands the list (all items when omitted).
-export default function Timeline({ source = "timeline", keyMoments, id = "timeline-section", headAs = "h2" }) {
+export default function Timeline({ source, keyMoments, id = "timeline-section", headAs = "h2" }) {
   const { t } = useLanguage();
   const tl = t[source];
   const box = useRef(null);

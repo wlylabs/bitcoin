@@ -22,5 +22,5 @@ export function proxy(request) {
 }
 
 export const config = {
-  matcher: ["/", "/history", "/cryptography", "/memecoins", "/lab"],
+  matcher: ["/", "/history", "/play", "/cryptography", "/memecoins", "/lab"],
 };
