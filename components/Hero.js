@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLanguage } from "./LanguageProvider";
 import Rich from "./Rich";
@@ -18,7 +19,7 @@ function useSinceGenesis() {
 }
 
 export default function Hero() {
-  const { t } = useLanguage();
+  const { lang, t } = useLanguage();
   const s = useSinceGenesis();
 
   let days = "—";
@@ -38,6 +39,14 @@ export default function Hero() {
         </div>
         <Rich as="h1" html={t.hero.title} />
         <p className="lede">{t.hero.lede}</p>
+        <div className="cta-row hero-cta">
+          <Link className="btn" href={`/${lang}/history`}>
+            {t.hero.ctaTime} <b aria-hidden="true">→</b>
+          </Link>
+          <Link className="btn ghost" href={`/${lang}/play`}>
+            {t.hero.ctaPlay}
+          </Link>
+        </div>
         <dl className="hero-stats">
           <div>
             <dt>{t.hero.since}</dt>

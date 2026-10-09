@@ -4,13 +4,13 @@ import { useLanguage } from "./LanguageProvider";
 import Rich from "./Rich";
 import SectionHead from "./SectionHead";
 
-export default function Prologue() {
+export default function Prologue({ headAs = "h1" }) {
   const { t } = useLanguage();
   const p = t.prolog;
   return (
     <section className="section" id="prolog">
       <div className="wrap">
-        <SectionHead as="h1" eyebrow={p.eyebrow} title={p.title} lede={p.lede} />
+        <SectionHead as={headAs} eyebrow={p.eyebrow} title={p.title} lede={p.lede} />
         <div className="prolog reveal">
           {p.items.map(([year, title, text, who]) => (
             <article key={year}>

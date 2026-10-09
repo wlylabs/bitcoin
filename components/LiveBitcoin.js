@@ -43,9 +43,11 @@ function timeAgo(ms, locale) {
 // File/Options/Help menu, Send Coins / Address Book toolbar, address and balance
 // rows, an "All Transactions" list with Status | Date | Description | Debit | Credit,
 // and a three-field status bar. The chrome is decorative; the data is live.
-export default function LiveBitcoin() {
+// `head` overrides the section heading; `note` adds a line under the window.
+export default function LiveBitcoin({ head, note }) {
   const { lang, t } = useLanguage();
   const L = t.live;
+  const h0 = head ?? L;
   const { price, network, failed, updatedAt, refresh } = useLiveBitcoin();
   const now = useNow(5_000);
   const loc = t.locale;
@@ -77,7 +79,7 @@ export default function LiveBitcoin() {
   return (
     <section className="section section-ruled" id="live">
       <div className="wrap">
-        <SectionHead eyebrow={L.eyebrow} title={L.title} lede={L.lede} />
+        <SectionHead eyebrow={h0.eyebrow} title={h0.title} lede={h0.lede} />
 
         <div className="v01 reveal">
           <div className="v01-title">
@@ -195,6 +197,7 @@ export default function LiveBitcoin() {
             <span className="v01-cell">{height !== null ? L.blocks(nf(height + 1)) : "—"}</span>
           </div>
         </div>
+        {note && <p className="live-note reveal">{note}</p>}
       </div>
     </section>
   );

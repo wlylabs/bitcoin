@@ -19,7 +19,7 @@ export function LanguageProvider({ initialLang, children }) {
     document.documentElement.lang = next;
     document.title = titleFor(next, PAGES.includes(page) ? page : "");
     document.cookie = `lang=${next}; path=/; max-age=31536000; samesite=lax`;
-    window.history.replaceState(null, "", `/${next}${page ? `/${page}` : ""}${window.location.hash}`);
+    window.history.replaceState(null, "", `/${next}${page ? `/${page}` : ""}${window.location.search}${window.location.hash}`);
   }, []);
 
   return (

@@ -1,11 +1,12 @@
 // Offline support: pages and data are fetched network-first and cached, so any
 // page you have visited still opens offline. Hashed build assets are immutable
 // and served cache-first. Bump VERSION to drop old caches on the next visit.
-const VERSION = "v1";
+const VERSION = "v2";
 const CACHE = `btc-history-${VERSION}`;
 const PRECACHE = [
   "/en", "/id",
   "/en/history", "/id/history",
+  "/en/play", "/id/play",
   "/en/cryptography", "/id/cryptography",
   "/en/memecoins", "/id/memecoins",
   "/en/lab", "/id/lab",
